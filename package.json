@@ -1,0 +1,60 @@
+{
+  "name": "json-logger-js",
+  "version": "0.0.0",
+  "description": "Simple json logger middleware with namespaces",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha ./src/ --recursive",
+    "test:watch": "mocha ./src/ --recursive --watch",
+    "semantic-release": "CI=true semantic-release pre && npm publish && semantic-release post"
+  },
+  "bin": {
+    "json-logger": "./bin/json-logger.js"
+  },
+  "config": {
+    "commitTypeMap": {
+      "test": "patch",
+      "chore": "patch",
+      "refactor": "patch"
+    }
+  },
+  "release": {
+    "analyzeCommits": "@bubltechnology/customizable-commit-analyzer",
+    "verifyConditions": {
+      "path": "./node_modules/semantic-release/dist/lib/plugin-noop.js"
+    }
+  },
+  "author": "Emartech",
+  "engines": {
+    "node": ">= 8"
+  },
+  "license": "ISC",
+  "keywords": [
+    "log",
+    "logging",
+    "debug",
+    "json"
+  ],
+  "dependencies": {
+    "chalk": "2.1.0",
+    "continuation-local-storage": "3.2.0",
+    "event-stream": "3.3.2"
+  },
+  "devDependencies": {
+    "@bubltechnology/customizable-commit-analyzer": "1.0.2-0",
+    "chai": "4.1.2",
+    "koa": "2.3.0",
+    "mocha": "3.5.0",
+    "semantic-release": "7.0.2",
+    "sinon": "3.2.1",
+    "sinon-chai": "2.13.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/emartech/json-logger-js.git"
+  },
+  "bugs": {
+    "url": "https://github.com/emartech/json-logger-js/issues"
+  },
+  "homepage": "https://github.com/emartech/json-logger-js#readme"
+}
