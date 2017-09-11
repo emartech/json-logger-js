@@ -19,10 +19,7 @@
     }
   },
   "release": {
-    "analyzeCommits": "@bubltechnology/customizable-commit-analyzer",
-    "verifyConditions": {
-      "path": "./node_modules/semantic-release/dist/lib/plugin-noop.js"
-    }
+    "analyzeCommits": "@bubltechnology/customizable-commit-analyzer"
   },
   "author": "Emartech",
   "engines": {
