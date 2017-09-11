@@ -6,7 +6,7 @@
   "scripts": {
     "test": "mocha ./src/ --recursive",
     "test:watch": "mocha ./src/ --recursive --watch",
-    "semantic-release": "CI=true semantic-release pre && npm publish && semantic-release post"
+    "semantic-release": "CI=true semantic-release pre && npm publish --access public && semantic-release post"
   },
   "bin": {
     "json-logger": "./bin/json-logger.js"
