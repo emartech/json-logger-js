@@ -6,7 +6,8 @@
   "scripts": {
     "test": "mocha ./src/ --recursive",
     "test:watch": "mocha ./src/ --recursive --watch",
-    "semantic-release": "CI=true semantic-release pre && npm publish --access public && semantic-release post"
+    "semantic-release": "CI=true semantic-release pre && npm publish --access public && semantic-release post",
+    "koa-example": "DEBUG=* node koa-example.js"
   },
   "bin": {
     "json-logger": "./bin/json-logger.js"

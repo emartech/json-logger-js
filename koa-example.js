@@ -12,8 +12,9 @@ app.use(async (ctx, next) => {
   await next();
 });
 app.use(logFactory.getMiddleware());
-app.use(async () => {
+app.use(async (ctx) => {
   logger.info('works');
+  ctx.body = 'It works';
 });
 
 app.listen(port);
