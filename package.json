@@ -1,5 +1,5 @@
 {
-  "name": "json-logger-js",
+  "name": "@emartech/json-logger",
   "version": "0.0.0",
   "description": "Simple json logger middleware with namespaces",
   "main": "index.js",
