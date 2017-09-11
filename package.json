@@ -38,7 +38,7 @@
   ],
   "dependencies": {
     "chalk": "2.1.0",
-    "continuation-local-storage": "3.2.0",
+    "cls-hooked": "4.2.2",
     "event-stream": "3.3.2"
   },
   "devDependencies": {

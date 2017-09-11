@@ -1,6 +1,6 @@
 'use strict';
 let Logger = require('./logger');
-const continuationLocalStorage = require('continuation-local-storage');
+const continuationLocalStorage = require('cls-hooked');
 
 describe('Logger', function() {
   let logger;

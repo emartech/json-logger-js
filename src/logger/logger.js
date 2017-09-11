@@ -1,7 +1,7 @@
 'use strict';
 
 let config = require('../config');
-const continuationLocalStorage = require('continuation-local-storage');
+const continuationLocalStorage = require('cls-hooked');
 
 
 let logMethodFactory = function(level) {

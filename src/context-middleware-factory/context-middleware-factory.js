@@ -1,6 +1,6 @@
 'use strict';
 
-const continuationLocalStorage = require('continuation-local-storage');
+const continuationLocalStorage = require('cls-hooked');
 
 class ContextMiddlewareFactory {
   static getMiddleware() {

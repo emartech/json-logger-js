@@ -1,7 +1,7 @@
 'use strict';
 
 const ContextMiddlewareFactory = require('./context-middleware-factory');
-const continuationLocalStorage = require('continuation-local-storage');
+const continuationLocalStorage = require('cls-hooked');
 
 describe('ContextMiddlewareFactory', function() {
   const requestId = 'uuid';
