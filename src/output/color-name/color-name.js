@@ -12,7 +12,7 @@ module.exports = function colorName(name) {
     colorCounter++;
   }
 
-  let color = colors[names[name].color];
+  const color = colors[names[name].color];
   return chalk[color](name);
 };
 

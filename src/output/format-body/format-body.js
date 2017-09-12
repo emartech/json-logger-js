@@ -14,7 +14,7 @@ module.exports = function(logBody) {
     delete log.msg;
   }
 
-  let keys = Object.keys(log);
+  const keys = Object.keys(log);
 
   return keys
     .sort()

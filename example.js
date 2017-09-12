@@ -1,9 +1,10 @@
 'use strict';
-process.env.DEBUG = 'redis';
-let logger = require('./index');
 
-let mongoLogger = logger('mongo');
-let redisLogger = logger('redis');
+process.env.DEBUG = 'redis';
+const logger = require('./index');
+
+const mongoLogger = logger('mongo');
+const redisLogger = logger('redis');
 
 // simple info logging with enabled namespace
 redisLogger.info('connected', { domain: 'yahoo' });

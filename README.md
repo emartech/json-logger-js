@@ -9,8 +9,8 @@ It has the same logging levels as [bunyan].
 
 ```javascript
 process.env.DEBUG = 'redis';
-let mongoLogger = require('@emartech/json-logger')('mongo');
-let redisLogger = require('@emartech/json-logger')('redis');
+const mongoLogger = require('@emartech/json-logger')('mongo');
+const redisLogger = require('@emartech/json-logger')('redis');
 
 // simple info logging with enabled namespace
 redisLogger.info('connected', { domain: 'yahoo' });

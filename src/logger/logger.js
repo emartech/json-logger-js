@@ -4,7 +4,7 @@ const config = require('../config');
 const continuationLocalStorage = require('cls-hooked');
 const STACK_TRACE_LIMIT = 4000;
 
-let logMethodFactory = function(level) {
+const logMethodFactory = function(level) {
   return function(action, data) {
     if (!this.enabled) {
       return;
