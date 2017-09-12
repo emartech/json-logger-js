@@ -1,6 +1,6 @@
 'use strict';
 
-let colorName = require('./color-name');
+const colorName = require('./color-name');
 
 describe('colorName', function() {
   it('should pick the first color for the name', function() {
@@ -12,8 +12,8 @@ describe('colorName', function() {
   });
 
   it('should add different colors for different names', function() {
-    let firstName = colorName('mongo');
-    let secondName = colorName('redis');
+    const firstName = colorName('mongo');
+    const secondName = colorName('redis');
 
     expect(secondName.replace('redis', 'mongo')).not.to.eql(firstName);
   });

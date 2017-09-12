@@ -1,5 +1,6 @@
 'use strict';
-let stringifyLevel = require('./stringify-level');
+
+const stringifyLevel = require('./stringify-level');
 
 describe('stringifyLevel', function() {
   it('should transform code to readable text', function() {

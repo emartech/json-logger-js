@@ -6,7 +6,7 @@ class Timer {
   }
 
   elapsedTime() {
-    let end = new Date().getTime();
+    const end = new Date().getTime();
 
     return end - this.start;
   }

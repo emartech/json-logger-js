@@ -3,8 +3,8 @@
 function isNamespaceEnabled(availableNamespaces, namespace) {
   availableNamespaces = availableNamespaces.split(/[\s,]+/);
   let enabled = false;
-  let adds = [];
-  let skips = [];
+  const adds = [];
+  const skips = [];
 
   availableNamespaces.forEach(function(name) {
     if (!name) {

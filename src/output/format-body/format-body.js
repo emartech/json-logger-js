@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = function(logBody) {
-  let log = Object.assign({}, logBody);
+  const log = Object.assign({}, logBody);
 
   delete log.name;
   delete log.level;

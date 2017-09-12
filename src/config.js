@@ -1,7 +1,8 @@
 'use strict';
-let chalk = require('chalk');
 
-let levels = {
+const chalk = require('chalk');
+
+const levels = {
   trace: {
     number: 10,
     name: 'TRACE'
@@ -28,9 +29,9 @@ let levels = {
   },
 };
 
-let availableLevels = Object.keys(levels);
+const availableLevels = Object.keys(levels);
 
-let coloredNames = {};
+const coloredNames = {};
 availableLevels.forEach((levelName) => {
   coloredNames[levels[levelName].number] = levels[levelName].name;
 });

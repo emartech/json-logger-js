@@ -1,7 +1,8 @@
 'use strict';
-let sinon = require('sinon');
-let chai = require('chai');
-let sinonChai = require('sinon-chai');
+
+const sinon = require('sinon');
+const chai = require('chai');
+const sinonChai = require('sinon-chai');
 global.expect = require('chai').expect;
 
 chai.use(sinonChai);

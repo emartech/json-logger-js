@@ -4,8 +4,8 @@ module.exports = {
   lastLog: null,
 
   elapsedTime: function() {
+    const current = this.getCurrentTime();
     let elapsed = 0;
-    let current = this.getCurrentTime();
 
     if (this.lastLog) {
       elapsed = current - this.lastLog;

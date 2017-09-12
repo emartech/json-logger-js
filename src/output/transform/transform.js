@@ -1,14 +1,15 @@
 'use strict';
-let colorName = require('../color-name/color-name');
-let stringifyLevel = require('../stringify-level/stringify-level');
-let formatTime = require('../format-time/format-time');
-let formatBody = require('../format-body/format-body');
+
+const colorName = require('../color-name/color-name');
+const stringifyLevel = require('../stringify-level/stringify-level');
+const formatTime = require('../format-time/format-time');
+const formatBody = require('../format-body/format-body');
 
 module.exports = function(line) {
   let transformedLine;
   if (line.length) {
     try {
-      let data = JSON.parse(line);
+      const data = JSON.parse(line);
 
       if (data.hasOwnProperty('name')) {
         transformedLine = [

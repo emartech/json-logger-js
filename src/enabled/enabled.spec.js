@@ -1,5 +1,6 @@
 'use strict';
-let isNamespaceEnabled = require('./enabled');
+
+const isNamespaceEnabled = require('./enabled');
 
 describe('isNamespaceAvailable', function() {
   it('should enable when variables only contain one', function() {
@@ -21,7 +22,7 @@ describe('isNamespaceAvailable', function() {
   });
 
   it('should allow multiple available namespaces', function() {
-    let availableNamespaces = 'mongo,redis';
+    const availableNamespaces = 'mongo,redis';
 
     expect(isNamespaceEnabled(
       availableNamespaces, 'mongo'

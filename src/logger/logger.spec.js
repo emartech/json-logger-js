@@ -1,5 +1,6 @@
 'use strict';
-let Logger = require('./logger');
+
+const Logger = require('./logger');
 const continuationLocalStorage = require('cls-hooked');
 
 describe('Logger', function() {
@@ -13,7 +14,7 @@ describe('Logger', function() {
   it('should call log info method when enabled', function() {
     logger.info('wedidit', { details: 'forever' });
 
-    let logArguments = JSON.parse(console.log.args[0]);
+    const logArguments = JSON.parse(console.log.args[0]);
     expect(logArguments.name).to.eql('mongo');
     expect(logArguments.action).to.eql('wedidit');
     expect(logArguments.level).to.eql(30);
@@ -21,13 +22,13 @@ describe('Logger', function() {
   });
 
   it('should log prequest id if there is namespace present', function() {
-    let namespace = continuationLocalStorage
+    const namespace = continuationLocalStorage
       .createNamespace('session');
 
     namespace.run(function(){
       namespace.set('request_id', 'uid');
       logger.info('wedidit');
-      let logArguments = JSON.parse(console.log.args[0]);
+      const logArguments = JSON.parse(console.log.args[0]);
       expect(logArguments.request_id).to.eql('uid');
     });
   });
@@ -41,11 +42,11 @@ describe('Logger', function() {
   });
 
   it('should log error with action', function() {
-    let error = new Error('failed');
+    const error = new Error('failed');
 
     logger.fromError('hi', error, { details: 'here' });
 
-    let logArguments = JSON.parse(console.log.args[0]);
+    const logArguments = JSON.parse(console.log.args[0]);
     expect(logArguments.name).to.eql('mongo');
     expect(logArguments.action).to.eql('hi');
     expect(logArguments.level).to.eql(50);

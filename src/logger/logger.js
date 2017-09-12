@@ -1,8 +1,8 @@
 'use strict';
 
-let config = require('../config');
+const config = require('../config');
 const continuationLocalStorage = require('cls-hooked');
-
+const STACK_TRACE_LIMIT = 4000;
 
 let logMethodFactory = function(level) {
   return function(action, data) {
@@ -35,9 +35,15 @@ class Logger {
   fromError(action, error, options = {}) {
     this.error(action, Object.assign({
       error_name: error.name,
-      error_stack: error.stack,
+      error_stack: this._shortenStackTrace(error),
       error_message: error.message
     }, options));
+  }
+
+  _shortenStackTrace(error) {
+    return error.stack.length > STACK_TRACE_LIMIT
+      ? error.stack.substring(0, STACK_TRACE_LIMIT) + ' ...'
+      : error.stack
   }
 }
 
