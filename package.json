@@ -37,9 +37,11 @@
     "json"
   ],
   "dependencies": {
-    "chalk": "2.1.0",
+    "chalk": "2.3.0",
     "cls-hooked": "4.2.2",
-    "event-stream": "3.3.2"
+    "event-stream": "3.3.4",
+    "lodash": "4.17.4",
+    "uuid": "3.1.0"
   },
   "devDependencies": {
     "@bubltechnology/customizable-commit-analyzer": "1.0.2-0",

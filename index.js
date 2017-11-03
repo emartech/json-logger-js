@@ -21,6 +21,7 @@ logFactory.Timer = Timer;
 logFactory.getNamespaces = function() {
   return process.env.DEBUG || '';
 };
-logFactory.getMiddleware = contextMiddlewareFactory.getMiddleware;
+logFactory.getMiddleware = contextMiddlewareFactory.getMiddleware.bind(contextMiddlewareFactory);
+logFactory.setOnContext = contextMiddlewareFactory.setOnContext.bind(contextMiddlewareFactory);
 
 module.exports = logFactory;

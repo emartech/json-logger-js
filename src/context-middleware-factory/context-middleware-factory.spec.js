@@ -32,30 +32,15 @@ describe('ContextMiddlewareFactory', function() {
     subject = ContextMiddlewareFactory.getMiddleware();
   });
 
+  afterEach(function() {
+    ContextMiddlewareFactory.destroyNamespace();
+  });
+
   it('should store request id to session information as middleware', async function() {
     await subject(requestObject, next);
 
     expect(next).to.have.been.called;
     expect(createNamespaceStub).to.have.been.calledWith('session');
     expect(namespaceStub.set).to.have.been.calledWith('request_id', requestId);
-  });
-
-  it('should destroy the namespace after action', async function() {
-    await subject(requestObject, next);
-
-    expect(createNamespaceStub).to.have.been.calledWith('session');
-    expect(destroyNamespaceStub).to.have.been.calledWith('session');
-  });
-
-  it('should destroy the namespace if an error occours', async function() {
-    next.returns(Promise.reject(new Error('Action failed')));
-
-    try {
-      await subject(requestObject, next);
-      throw new Error('should fail');
-    } catch(error) {
-      expect(error.message).to.eql('Action failed');
-      expect(destroyNamespaceStub).to.have.been.calledWith('session');
-    }
   });
 });

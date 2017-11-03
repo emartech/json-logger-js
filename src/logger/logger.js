@@ -2,6 +2,7 @@
 
 const config = require('../config');
 const continuationLocalStorage = require('cls-hooked');
+const _ = require('lodash');
 const STACK_TRACE_LIMIT = 4000;
 
 const logMethodFactory = function(level) {
@@ -11,7 +12,7 @@ const logMethodFactory = function(level) {
     }
 
     const namespace = continuationLocalStorage.getNamespace('session');
-    const storage = namespace ? { request_id : namespace.get('request_id') }: {};
+    const storage = (namespace && namespace.active) ? _.omit(namespace.active, 'id', '_ns_name') : {};
 
     console.log(JSON.stringify(Object.assign(
       {
