@@ -16,14 +16,14 @@ describe('LogFactory', function() {
     const logger = logFactory('mongo');
 
     expect(logger).to.be.an.instanceOf(Logger);
-    expect(logger.enabled).to.be.true;
+    expect(logger.isEnabled()).to.be.true;
   });
 
   it('should return a disabled log instance when different', function() {
     const logger = logFactory('redis');
 
     expect(logger).to.be.an.instanceOf(Logger);
-    expect(logger.enabled).to.be.false;
+    expect(logger.isEnabled()).to.be.false;
   });
 
   it('should be mockable through public interface', function() {

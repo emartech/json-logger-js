@@ -41,6 +41,17 @@ describe('Logger', function() {
     expect(console.log).not.to.have.been.called;
   });
 
+  it('should not call log info method when disabled', function() {
+    logger = new Logger('mongo', false);
+    const timer = logger.timer();
+    const infoStub = this.sandbox.stub(logger, 'info');
+
+    this.clock.tick(100);
+    timer.info('hi');
+
+    expect(infoStub).to.have.been.calledWith('hi', { duration: 100 });
+  });
+
   it('should log error with action', function() {
     const error = new Error('failed');
 
