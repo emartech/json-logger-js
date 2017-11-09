@@ -2,19 +2,25 @@
 
 const config = require('../config');
 const continuationLocalStorage = require('cls-hooked');
-const _ = require('lodash');
 const STACK_TRACE_LIMIT = 4000;
 const Timer = require('../timer/timer');
+
+const getContextStorage = function() {
+  const contextNamespace = continuationLocalStorage.getNamespace('session');
+
+  if (contextNamespace && contextNamespace.active) {
+    const { id, _ns_name, ...contextData } = contextNamespace.active;
+    return contextData;
+  }
+
+  return {};
+};
 
 const logMethodFactory = function(level) {
   return function(action, data) {
     if (!this._enabled) {
       return;
     }
-
-    const contextNamespace = continuationLocalStorage.getNamespace('session');
-    const contextStorage = (contextNamespace && contextNamespace.active) ?
-      _.omit(contextNamespace.active, 'id', '_ns_name') : {};
 
     console.log(JSON.stringify(Object.assign(
       {
@@ -23,7 +29,7 @@ const logMethodFactory = function(level) {
         level: config.levels[level].number,
         time: new Date().toISOString()
       },
-      contextStorage,
+      getContextStorage(),
       data
     )));
   }
