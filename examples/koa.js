@@ -1,17 +1,11 @@
 'use strict';
 
 const Koa = require('koa');
-const uuid = require('uuid');
-const logFactory = require('./index');
+const logFactory = require('../index');
 const logger = logFactory('example');
 const port = 3000;
 
 const app = new Koa();
-
-app.use(async (ctx, next) => {
-  ctx.request.header['x-request-id'] = uuid.v4();
-  await next();
-});
 
 app.use(logFactory.getMiddleware());
 

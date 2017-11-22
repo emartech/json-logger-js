@@ -19,7 +19,9 @@ logFactory.Logger = Logger;
 logFactory.getNamespaces = function() {
   return process.env.DEBUG || '';
 };
-logFactory.getMiddleware = contextMiddlewareFactory.getMiddleware.bind(contextMiddlewareFactory);
+logFactory.getKoaMiddleware = contextMiddlewareFactory.getKoaMiddleware.bind(contextMiddlewareFactory);
+logFactory.getExpressMiddleware = contextMiddlewareFactory.getExpressMiddleware.bind(contextMiddlewareFactory);
+logFactory.getMiddleware = logFactory.getKoaMiddleware;
 logFactory.setOnContext = contextMiddlewareFactory.setOnContext.bind(contextMiddlewareFactory);
 
 module.exports = logFactory;

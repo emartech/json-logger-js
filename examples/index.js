@@ -1,7 +1,7 @@
 'use strict';
 
 process.env.DEBUG = 'redis';
-const logger = require('./index');
+const logger = require('../index');
 
 const mongoLogger = logger('mongo');
 const redisLogger = logger('redis');
