@@ -1,19 +1,27 @@
 'use strict';
 
 const chalk = require('chalk');
-
 const colors = ['cyan', 'magenta', 'grey', 'blue', 'green', 'yellow', 'white', 'red'];
-const names = {};
-let colorCounter = 0;
 
-module.exports = function colorName(name) {
-  if (!names[name]) {
-    names[name] = { color: colorCounter % colors.length };
-    colorCounter++;
+class ColorName {
+  static addColor(name) {
+    if (!this.names[name]) {
+      this.names[name] = { color: this.counter % colors.length };
+      this.counter++;
+    }
+
+    const color = colors[this.names[name].color];
+    return chalk[color](name);
   }
 
-  const color = colors[names[name].color];
-  return chalk[color](name);
-};
+  static reset() {
+    this.counter = 0;
+    this.names = {};
+  }
+}
 
-module.exports.colors = colors;
+ColorName.counter = 0;
+ColorName.names = {};
+ColorName.colors = colors;
+
+module.exports = ColorName;
