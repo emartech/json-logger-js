@@ -2,7 +2,8 @@
 
 const config = require('../config');
 const continuationLocalStorage = require('cls-hooked');
-const STACK_TRACE_LIMIT = 4000;
+const STACK_TRACE_LIMIT = 3000;
+const DATA_LIMIT = 3000;
 const Timer = require('../timer/timer');
 const jsonFormatter = require('../formatter/json');
 const consoleOutput = require('../output/console');
@@ -44,16 +45,18 @@ class Logger {
   fromError(action, error, data = {}) {
     this.error(action, Object.assign({
       error_name: error.name,
-      error_stack: this._shortenStackTrace(error),
-      error_message: error.message
+      error_stack: this._shortenStackTrace(error.stack),
+      error_message: error.message,
+      error_data: this._shortenData(error.data)
     }, data));
   }
 
   warnFromError(action, error, data = {}) {
     this.warn(action, Object.assign({
       error_name: error.name,
-      error_stack: this._shortenStackTrace(error),
-      error_message: error.message
+      error_stack: this._shortenStackTrace(error.stack),
+      error_message: error.message,
+      error_data: this._shortenData(error.data)
     }, data));
   }
 
@@ -61,10 +64,22 @@ class Logger {
     return new Timer(this);
   }
 
-  _shortenStackTrace(error) {
-    return error.stack.length > STACK_TRACE_LIMIT
-      ? error.stack.substring(0, STACK_TRACE_LIMIT) + ' ...'
-      : error.stack
+  _shortenStackTrace(stack) {
+    return stack.length > STACK_TRACE_LIMIT
+      ? stack.substring(0, STACK_TRACE_LIMIT) + ' ...'
+      : stack
+  }
+
+  _shortenData(data) {
+    if (typeof data === 'undefined') {
+      return;
+    }
+
+    const stringifiedData = typeof data === 'object' ? JSON.stringify(data) : data;
+
+    return stringifiedData.length > DATA_LIMIT
+      ? stringifiedData.substring(0, DATA_LIMIT) + ' ...'
+      : stringifiedData
   }
 }
 

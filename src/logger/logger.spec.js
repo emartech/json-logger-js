@@ -63,6 +63,7 @@ describe('Logger', function() {
 
   it('should log error with action', function() {
     const error = new Error('failed');
+    error.data = { test: 'data' };
 
     logger.fromError('hi', error, { details: 'here' });
 
@@ -75,9 +76,28 @@ describe('Logger', function() {
     expect(logArguments.error_name).to.eql(error.name);
     expect(logArguments.error_stack).to.eql(error.stack);
     expect(logArguments.error_message).to.eql(error.message);
+    expect(logArguments.error_data).to.eql(JSON.stringify(error.data));
   });
 
   it('should log error as warning with action', function() {
+    const error = new Error('failed');
+    error.data = { test: 'data' };
+
+    logger.warnFromError('hi', error, { details: 'here' });
+
+    const logArguments = JSON.parse(console.log.args[0]);
+    expect(logArguments.name).to.eql('mongo');
+    expect(logArguments.action).to.eql('hi');
+    expect(logArguments.level).to.eql(40);
+    expect(logArguments.details).to.eql('here');
+
+    expect(logArguments.error_name).to.eql(error.name);
+    expect(logArguments.error_stack).to.eql(error.stack);
+    expect(logArguments.error_message).to.eql(error.message);
+    expect(logArguments.error_data).to.eql(JSON.stringify(error.data));
+  });
+
+  it('should not log error data when it is undefined', function() {
     const error = new Error('failed');
 
     logger.warnFromError('hi', error, { details: 'here' });
@@ -91,6 +111,25 @@ describe('Logger', function() {
     expect(logArguments.error_name).to.eql(error.name);
     expect(logArguments.error_stack).to.eql(error.stack);
     expect(logArguments.error_message).to.eql(error.message);
+    expect(logArguments).to.not.have.any.keys('error_data');
+  });
+
+  it('should log only 3000 character of data', function() {
+    const error = new Error('failed');
+    error.data = 'exactlyTen'.repeat(400);
+
+    logger.warnFromError('hi', error, { details: 'here' });
+
+    const logArguments = JSON.parse(console.log.args[0]);
+    expect(logArguments.name).to.eql('mongo');
+    expect(logArguments.action).to.eql('hi');
+    expect(logArguments.level).to.eql(40);
+    expect(logArguments.details).to.eql('here');
+
+    expect(logArguments.error_name).to.eql(error.name);
+    expect(logArguments.error_stack).to.eql(error.stack);
+    expect(logArguments.error_message).to.eql(error.message);
+    expect(logArguments.error_data.length).to.eql(3004);
   });
 
   describe('#configure', function() {
