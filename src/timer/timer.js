@@ -23,6 +23,14 @@ class Timer {
     );
   }
 
+  warnFromError(action, error, data = {}) {
+    this._logger.warnFromError(
+      action,
+      error,
+      Object.assign({ duration: this._duration() }, data)
+    );
+  }
+
   _duration() {
     const end = new Date().getTime();
 

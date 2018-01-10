@@ -77,6 +77,22 @@ describe('Logger', function() {
     expect(logArguments.error_message).to.eql(error.message);
   });
 
+  it('should log error as warning with action', function() {
+    const error = new Error('failed');
+
+    logger.warnFromError('hi', error, { details: 'here' });
+
+    const logArguments = JSON.parse(console.log.args[0]);
+    expect(logArguments.name).to.eql('mongo');
+    expect(logArguments.action).to.eql('hi');
+    expect(logArguments.level).to.eql(40);
+    expect(logArguments.details).to.eql('here');
+
+    expect(logArguments.error_name).to.eql(error.name);
+    expect(logArguments.error_stack).to.eql(error.stack);
+    expect(logArguments.error_message).to.eql(error.message);
+  });
+
   describe('#configure', function() {
     it('should change format method', function() {
       const formattedOutput = '{"my":"method"}';

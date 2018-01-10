@@ -26,4 +26,16 @@ describe('Timer', function() {
 
     expect(errorStub).to.have.been. calledWith('time', error, { customer_id: 10, duration: 100 });
   });
+
+  it('should log elapsed time with error', function() {
+    const logger = new Logger('test', false);
+    const errorStub = this.sandbox.stub(logger, 'warnFromError');
+    const timer = new Timer(logger);
+    const error = new Error('intended');
+
+    this.clock.tick(100);
+    timer.warnFromError('time', error, { customer_id: 10 });
+
+    expect(errorStub).to.have.been. calledWith('time', error, { customer_id: 10, duration: 100 });
+  });
 });

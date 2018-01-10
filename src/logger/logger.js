@@ -49,6 +49,14 @@ class Logger {
     }, data));
   }
 
+  warnFromError(action, error, data = {}) {
+    this.warn(action, Object.assign({
+      error_name: error.name,
+      error_stack: this._shortenStackTrace(error),
+      error_message: error.message
+    }, data));
+  }
+
   timer() {
     return new Timer(this);
   }
