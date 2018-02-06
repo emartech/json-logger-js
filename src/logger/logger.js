@@ -7,7 +7,7 @@ const DATA_LIMIT = 3000;
 const Timer = require('../timer/timer');
 const jsonFormatter = require('../formatter/json');
 const consoleOutput = require('../output/console');
-const allowedKeys = ['output', 'formatter'];
+const allowedKeys = ['output', 'formatter', 'transformers'];
 
 const getContextStorage = function() {
   const contextNamespace = continuationLocalStorage.getNamespace('session');
@@ -43,21 +43,11 @@ class Logger {
   }
 
   fromError(action, error, data = {}) {
-    this.error(action, Object.assign({
-      error_name: error.name,
-      error_stack: this._shortenStackTrace(error.stack),
-      error_message: error.message,
-      error_data: this._shortenData(error.data)
-    }, data));
+    this.error(action, Object.assign(this._getErrorDetails(error), data));
   }
 
   warnFromError(action, error, data = {}) {
-    this.warn(action, Object.assign({
-      error_name: error.name,
-      error_stack: this._shortenStackTrace(error.stack),
-      error_message: error.message,
-      error_data: this._shortenData(error.data)
-    }, data));
+    this.warn(action, Object.assign(this._getErrorDetails(error), data));
   }
 
   timer() {
@@ -81,11 +71,21 @@ class Logger {
       ? stringifiedData.substring(0, DATA_LIMIT) + ' ...'
       : stringifiedData
   }
+
+  _getErrorDetails(error) {
+    return {
+      error_name: error.name,
+      error_stack: this._shortenStackTrace(error.stack),
+      error_message: error.message,
+      error_data: this._shortenData(error.data)
+    }
+  }
 }
 
 Logger.config = {
   formatter: jsonFormatter,
-  output: consoleOutput
+  output: consoleOutput,
+  transformers: []
 };
 
 const logMethodFactory = function(level) {
@@ -94,7 +94,7 @@ const logMethodFactory = function(level) {
       return;
     }
 
-    const dataToLog = Object.assign(
+    let dataToLog = Object.assign(
       {
         name: this._namespace,
         action: action,
@@ -104,6 +104,10 @@ const logMethodFactory = function(level) {
       getContextStorage(),
       data
     );
+
+    Logger.config.transformers.forEach((transform) => {
+      dataToLog = transform(dataToLog)
+    });
 
     Logger.config.output(
       Logger.config.formatter(dataToLog)

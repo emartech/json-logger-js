@@ -16,7 +16,8 @@ describe('Logger', function() {
   afterEach(function() {
     Logger.configure({
       formatter: jsonFormatter,
-      output: consoleOutput
+      output: consoleOutput,
+      transformers: []
     });
   });
 
@@ -166,6 +167,20 @@ describe('Logger', function() {
       } catch(e) {
         expect(e.message).to.eql('Only the following keys are allowed: formatter, output');
       }
+    });
+
+    it('should modify logged data based on transformers', function() {
+      Logger.configure({
+        transformers: [
+          log => Object.assign({ debug: true }, log)
+        ]
+      });
+
+      logger.info('hi');
+
+      const logArguments = JSON.parse(console.log.args[0]);
+      expect(logArguments.action).to.eql('hi');
+      expect(logArguments.debug).to.eql(true);
     });
   });
 });
