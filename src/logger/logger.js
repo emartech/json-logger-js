@@ -1,23 +1,12 @@
 'use strict';
 
 const config = require('../config');
-const continuationLocalStorage = require('cls-hooked');
 const STACK_TRACE_LIMIT = 3000;
 const DATA_LIMIT = 3000;
 const Timer = require('../timer/timer');
 const jsonFormatter = require('../formatter/json');
 const consoleOutput = require('../output/console');
 const allowedKeys = ['output', 'formatter', 'transformers'];
-
-const getContextStorage = function() {
-  const contextNamespace = continuationLocalStorage.getNamespace('session');
-  if (contextNamespace && contextNamespace.active) {
-    const { id, _ns_name, ...contextData } = contextNamespace.active;
-    return contextData;
-  }
-
-  return {};
-};
 
 class Logger {
   constructor(namespace, enabled) {
@@ -101,7 +90,6 @@ const logMethodFactory = function(level) {
         level: config.levels[level].number,
         time: new Date().toISOString()
       },
-      getContextStorage(),
       data
     );
 

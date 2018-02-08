@@ -18,7 +18,6 @@
     }
   },
   "release": {
-    "analyzeCommits": "@bubltechnology/customizable-commit-analyzer",
     "verifyConditions": {
       "path": "./node_modules/semantic-release/src/lib/plugin-noop.js"
     }
@@ -35,12 +34,10 @@
     "json"
   ],
   "dependencies": {
-    "chalk": "2.3.0",
-    "cls-hooked": "4.2.2",
-    "uuid": "3.1.0"
+    "chalk": "2.3.0"
   },
   "devDependencies": {
-    "@bubltechnology/customizable-commit-analyzer": "1.0.2-0",
+    "@emartech/cls-adapter": "1.1.0",
     "chai": "4.1.2",
     "express": "4.16.2",
     "koa": "2.3.0",

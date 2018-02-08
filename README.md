@@ -33,19 +33,26 @@ Examples can be found in ```examples/index.js```.
 
 ### Logging request identifier automatically
 
-The library provides middlewares for both Koa and Express applications.
-These middlewares add the request identifiers coming from the header X-Request-Id to every log 
-(in the log: `request_id`).
+The continuation local storage handling has moved to the `@emartech/cls-adapter` package.
+You need to use the middlewares of `@emartech/cls-adapter` and add its transformer to the loggers configure method.
+This way it will log the request identifier coming from the header field (`X-Request-Id`).
+
+For automatting 
 
 ```javascript
 const Koa = require('koa');
 const logFactory = require('@emartech/json-logger');
+const clsAdapter = require('@emartech/cls-adapter');
 
-app.use(logFactory.getMiddleware());
+logFactory.configure({
+  transformers: [
+    clsAdapter.addContextStorageToInput()
+  ]
+});
+
+const app = new Koa();
+app.use(clsAdapter.getKoaMiddleware());
 ```
-
-The method `getMiddleware` creates a Koa middleware (alias for `getKoaMiddleware`).
-The `getExpressMiddleware` method does the same, but returns an Express middleware.
 
 ## Development
 
