@@ -22,7 +22,7 @@ class Logger {
   static _validate(options) {
     Object.keys(options).forEach(key => {
       if (!allowedKeys.includes(key)) {
-        throw new Error('Only the following keys are allowed: formatter, output')
+        throw new Error('Only the following keys are allowed: formatter, output');
       }
     });
   }
@@ -37,6 +37,10 @@ class Logger {
 
   warnFromError(action, error, data = {}) {
     this.warn(action, Object.assign(this._getErrorDetails(error), data));
+  }
+
+  customError(severity, action, error, data = {}) {
+    logMethodFactory(severity).bind(this)(action, Object.assign(this._getErrorDetails(error), data));
   }
 
   timer() {
@@ -67,7 +71,7 @@ class Logger {
       error_stack: this._shortenStackTrace(error.stack),
       error_message: error.message,
       error_data: this._shortenData(error.data)
-    }
+    };
   }
 }
 
