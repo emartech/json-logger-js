@@ -31,12 +31,16 @@ class Logger {
     return this._enabled;
   }
 
+  customError(severity, action, error, data = {}) {
+    logMethodFactory(severity).bind(this)(action, Object.assign(this._getErrorDetails(error), data));
+  }
+
   fromError(action, error, data = {}) {
-    this.error(action, Object.assign(this._getErrorDetails(error), data));
+    this.customError('error', action, error, data);
   }
 
   warnFromError(action, error, data = {}) {
-    this.warn(action, Object.assign(this._getErrorDetails(error), data));
+    this.customError('warn', action, error, data);
   }
 
   timer() {
