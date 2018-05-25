@@ -128,7 +128,7 @@ describe('Logger', function() {
 
       logger.customError('info', 'hi', error, { details: 'here' });
 
-      const logArguments = JSON.parse(console.log.args[0]);
+      const logArguments = JSON.parse(Logger.config.output.args[0]);
       expect(logArguments.name).to.eql('mongo');
       expect(logArguments.action).to.eql('hi');
       expect(logArguments.level).to.eql(30);
@@ -145,7 +145,7 @@ describe('Logger', function() {
 
       logger.customError('warn', 'hi', error, { details: 'here' });
 
-      const logArguments = JSON.parse(console.log.args[0]);
+      const logArguments = JSON.parse(Logger.config.output.args[0]);
       expect(logArguments.name).to.eql('mongo');
       expect(logArguments.action).to.eql('hi');
       expect(logArguments.level).to.eql(40);
@@ -163,7 +163,7 @@ describe('Logger', function() {
 
       logger.customError('error', 'hi', error, { details: 'here' });
 
-      const logArguments = JSON.parse(console.log.args[0]);
+      const logArguments = JSON.parse(Logger.config.output.args[0]);
       expect(logArguments.name).to.eql('mongo');
       expect(logArguments.action).to.eql('hi');
       expect(logArguments.level).to.eql(50);
@@ -214,9 +214,7 @@ describe('Logger', function() {
 
     it('should modify logged data based on transformers', function() {
       Logger.configure({
-        transformers: [
-          log => Object.assign({ debug: true }, log)
-        ]
+        transformers: [log => Object.assign({ debug: true }, log)]
       });
 
       logger.info('hi');
