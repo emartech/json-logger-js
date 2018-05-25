@@ -6,10 +6,11 @@ const consoleOutput = require('../output/console');
 
 describe('Logger', function() {
   let logger;
+  let outputStub;
 
   beforeEach(function() {
     logger = new Logger('mongo', true);
-    this.sandbox.stub(console, 'log');
+    outputStub = this.sandbox.stub(Logger.config, 'output');
   });
 
   afterEach(function() {
@@ -23,7 +24,7 @@ describe('Logger', function() {
   it('should call log info method when enabled', function() {
     logger.info('wedidit', { details: 'forever' });
 
-    const logArguments = JSON.parse(console.log.args[0]);
+    const logArguments = JSON.parse(Logger.config.output.args[0]);
     expect(logArguments.name).to.eql('mongo');
     expect(logArguments.action).to.eql('wedidit');
     expect(logArguments.level).to.eql(30);
@@ -35,7 +36,7 @@ describe('Logger', function() {
 
     logger.info('hi');
 
-    expect(console.log).not.to.have.been.called;
+    expect(Logger.config.output).not.to.have.been.called;
   });
 
   it('should not call log info method when disabled', function() {
@@ -55,7 +56,7 @@ describe('Logger', function() {
 
     logger.fromError('hi', error, { details: 'here' });
 
-    const logArguments = JSON.parse(console.log.args[0]);
+    const logArguments = JSON.parse(Logger.config.output.args[0]);
     expect(logArguments.name).to.eql('mongo');
     expect(logArguments.action).to.eql('hi');
     expect(logArguments.level).to.eql(50);
@@ -73,7 +74,7 @@ describe('Logger', function() {
 
     logger.warnFromError('hi', error, { details: 'here' });
 
-    const logArguments = JSON.parse(console.log.args[0]);
+    const logArguments = JSON.parse(Logger.config.output.args[0]);
     expect(logArguments.name).to.eql('mongo');
     expect(logArguments.action).to.eql('hi');
     expect(logArguments.level).to.eql(40);
@@ -90,7 +91,7 @@ describe('Logger', function() {
 
     logger.warnFromError('hi', error, { details: 'here' });
 
-    const logArguments = JSON.parse(console.log.args[0]);
+    const logArguments = JSON.parse(Logger.config.output.args[0]);
     expect(logArguments.name).to.eql('mongo');
     expect(logArguments.action).to.eql('hi');
     expect(logArguments.level).to.eql(40);
@@ -108,7 +109,7 @@ describe('Logger', function() {
 
     logger.warnFromError('hi', error, { details: 'here' });
 
-    const logArguments = JSON.parse(console.log.args[0]);
+    const logArguments = JSON.parse(Logger.config.output.args[0]);
     expect(logArguments.name).to.eql('mongo');
     expect(logArguments.action).to.eql('hi');
     expect(logArguments.level).to.eql(40);
@@ -132,7 +133,7 @@ describe('Logger', function() {
       logger.info('hi');
 
       expect(formatterStub).to.have.been.called;
-      expect(console.log).to.have.been.calledWith(formattedOutput);
+      expect(Logger.config.output).to.have.been.calledWith(formattedOutput);
     });
 
     it('should change output method', function() {
@@ -151,7 +152,7 @@ describe('Logger', function() {
           invalid: true
         });
         throw new Error('should throw');
-      } catch(e) {
+      } catch (e) {
         expect(e.message).to.eql('Only the following keys are allowed: formatter, output');
       }
     });
@@ -165,7 +166,7 @@ describe('Logger', function() {
 
       logger.info('hi');
 
-      const logArguments = JSON.parse(console.log.args[0]);
+      const logArguments = JSON.parse(Logger.config.output.args[0]);
       expect(logArguments.action).to.eql('hi');
       expect(logArguments.debug).to.eql(true);
     });

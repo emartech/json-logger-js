@@ -22,7 +22,7 @@ class Logger {
   static _validate(options) {
     Object.keys(options).forEach(key => {
       if (!allowedKeys.includes(key)) {
-        throw new Error('Only the following keys are allowed: formatter, output')
+        throw new Error('Only the following keys are allowed: formatter, output');
       }
     });
   }
@@ -46,7 +46,7 @@ class Logger {
   _shortenStackTrace(stack) {
     return stack.length > STACK_TRACE_LIMIT
       ? stack.substring(0, STACK_TRACE_LIMIT) + ' ...'
-      : stack
+      : stack;
   }
 
   _shortenData(data) {
@@ -58,7 +58,7 @@ class Logger {
 
     return stringifiedData.length > DATA_LIMIT
       ? stringifiedData.substring(0, DATA_LIMIT) + ' ...'
-      : stringifiedData
+      : stringifiedData;
   }
 
   _getErrorDetails(error) {
@@ -67,7 +67,7 @@ class Logger {
       error_stack: this._shortenStackTrace(error.stack),
       error_message: error.message,
       error_data: this._shortenData(error.data)
-    }
+    };
   }
 }
 
@@ -94,13 +94,13 @@ const logMethodFactory = function(level) {
     );
 
     Logger.config.transformers.forEach((transform) => {
-      dataToLog = transform(dataToLog)
+      dataToLog = transform(dataToLog);
     });
 
     Logger.config.output(
       Logger.config.formatter(dataToLog)
     );
-  }
+  };
 };
 
 Logger.prototype.trace = logMethodFactory('trace');
