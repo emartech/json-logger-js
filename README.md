@@ -153,7 +153,7 @@ Logger.configure({
 
 ### Logging request identifier automatically
 
-You need to use the middlewares of `@emartech/cls-adapter` and add its transformer to the loggers configure method.
+You need to use the middlewares of `@emartech/cls-adapter` and add its transformer to the logger's configure method.
 This way it will log the request identifier coming from the header field (`X-Request-Id`) to every log line 
 where the called function is originating from the route handler.
 
