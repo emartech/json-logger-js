@@ -121,6 +121,36 @@ describe('Logger', function() {
     expect(logArguments.error_data.length).to.eql(3004);
   });
 
+  it('should log request/response details for Axios-like error objects', function() {
+    const error = new Error('Request failed with status code 500');
+    error.isAxiosError = true;
+    error.response = {
+      status: 500,
+      statusText: 'Something horrible happened',
+      data: { useful_detail: 'important info' }
+    };
+    error.config = {
+      url: 'http://amazinghost.com/beautiful-path',
+      method: 'get'
+    };
+
+    logger.fromError('hi', error, { details: 'here' });
+
+    const logArguments = JSON.parse(Logger.config.output.args[0]);
+    expect(logArguments.name).to.eql('mongo');
+    expect(logArguments.action).to.eql('hi');
+    expect(logArguments.level).to.eql(50);
+
+    expect(logArguments.error_name).to.eql(error.name);
+    expect(logArguments.error_stack).to.eql(error.stack);
+    expect(logArguments.error_message).to.eql(error.message);
+    expect(logArguments.request_method).to.eql(error.config.method);
+    expect(logArguments.request_url).to.eql(error.config.url);
+    expect(logArguments.response_status).to.eql(error.response.status);
+    expect(logArguments.response_status_text).to.eql(error.response.statusText);
+    expect(logArguments.response_data).to.eql(JSON.stringify(error.response.data));
+  });
+
   describe('#customError', function() {
     it('should log error as the given severity with action', function() {
       const error = new Error('failed');

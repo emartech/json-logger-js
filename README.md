@@ -89,7 +89,7 @@ Same as info with fatal log level.
 ##### JsonLogger.prototype.fromError(action, data)
 
 Displays an error object which formatted to fit into one line.
-The displayed line contains the stack trace, the name and the message of the error.
+The displayed line contains the stack trace, the name and the message of the error (for Axios errors, also request and response details).
 The log level defaults to error.
 
 ```javascript
@@ -157,7 +157,7 @@ You need to use the middlewares of `@emartech/cls-adapter` and add its transform
 This way it will log the request identifier coming from the header field (`X-Request-Id`) to every log line 
 where the called function is originating from the route handler.
 
-For automatting 
+For automating 
 
 ```javascript
 const Koa = require('koa');
