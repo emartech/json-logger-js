@@ -66,12 +66,22 @@ class Logger {
   }
 
   _getErrorDetails(error) {
-    return {
+    const details = {
       error_name: error.name,
       error_stack: this._shortenStackTrace(error.stack),
       error_message: error.message,
       error_data: this._shortenData(error.data)
     };
+
+    if (error.isAxiosError) {
+      details.request_method = error.config.method;
+      details.request_url = error.config.url;
+      details.response_status = error.response.status;
+      details.response_status_text = error.response.statusText;
+      details.response_data = this._shortenData(error.response.data);
+    }
+
+    return details;
   }
 }
 
