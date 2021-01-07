@@ -66,22 +66,26 @@ class Logger {
   }
 
   _getErrorDetails(error) {
-    const details = {
+    const baseDetails = {
       error_name: error.name,
       error_stack: this._shortenStackTrace(error.stack),
       error_message: error.message,
       error_data: this._shortenData(error.data)
     };
 
-    if (error.isAxiosError) {
-      details.request_method = error.config.method;
-      details.request_url = error.config.url;
-      details.response_status = error.response.status;
-      details.response_status_text = error.response.statusText;
-      details.response_data = this._shortenData(error.response.data);
-    }
+    return Object.assign(baseDetails, this._getAxiosErrorDetails(error));
+  }
 
-    return details;
+  _getAxiosErrorDetails(error) {
+    if (!error.isAxiosError) return {};
+
+    return {
+      request_method: error.config.method,
+      request_url: error.config.url,
+      response_status: error.response ? error.response.status : undefined,
+      response_status_text: error.response ? error.response.statusText : undefined,
+      response_data: error.response ? this._shortenData(error.response.data) : undefined
+    };
   }
 }
 
