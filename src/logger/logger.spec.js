@@ -31,6 +31,15 @@ describe('Logger', function() {
     expect(logArguments.details).to.eql('forever');
   });
 
+  it('should be callable without the data object', function() {
+    logger.info('wedidit');
+
+    const logArguments = JSON.parse(Logger.config.output.args[0]);
+    expect(logArguments.name).to.eql('mongo');
+    expect(logArguments.action).to.eql('wedidit');
+    expect(logArguments.level).to.eql(30);
+  });
+
   it('should not call log info method when disabled', function() {
     logger = new Logger('mongo', false);
 

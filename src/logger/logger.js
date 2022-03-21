@@ -96,7 +96,7 @@ Logger.config = {
 };
 
 const logMethodFactory = function(level) {
-  return function(action, data) {
+  return function(action, data = {}) {
     if (!this._enabled) {
       return;
     }
