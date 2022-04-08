@@ -48,6 +48,10 @@ class Logger {
   }
 
   _shortenStackTrace(stack) {
+    if (typeof stack === 'undefined') {
+      return;
+    }
+
     return stack.length > STACK_TRACE_LIMIT
       ? stack.substring(0, STACK_TRACE_LIMIT) + ' ...'
       : stack;
@@ -66,6 +70,10 @@ class Logger {
   }
 
   _getErrorDetails(error) {
+    if (!(error instanceof Object)) {
+      return {};
+    }
+
     const baseDetails = {
       error_name: error.name,
       error_stack: this._shortenStackTrace(error.stack),
