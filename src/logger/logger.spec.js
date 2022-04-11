@@ -213,6 +213,44 @@ describe('Logger', function() {
       expect(logArguments.error_message).to.eql(error.message);
       expect(logArguments.error_data.length).to.eql(3004);
     });
+
+    describe('when not an Error instance is passed as error', function () {
+      [
+        { type: 'custom object', value: {} },
+        { type: 'string', value: 'error' },
+        { type: 'null', value: null },
+        { type: 'number', value: 12 },
+        { type: 'bool', value: true }
+      ].forEach(({ type, value }) => {
+        it(`should not throw error when ${type} is passed as error`, function () {
+          expect(() => logger.customError('error', 'hi', value, { details: 'here' })).to.not.throw();
+        });
+      });
+
+      it('should log error properties from custom error object', function () {
+        const errorObject = { name: 'Error', message: 'My custom error', stack: 'Stack', data: { value: 1 } };
+
+        logger.customError('error', 'hi', errorObject, { details: 'here' });
+
+        const logArguments = JSON.parse(Logger.config.output.args[0]);
+
+        expect(logArguments.error_name).to.eql(errorObject.name);
+        expect(logArguments.error_stack).to.eql(errorObject.stack);
+        expect(logArguments.error_message).to.eql(errorObject.message);
+        expect(logArguments.error_data).to.eql(JSON.stringify(errorObject.data));
+      });
+
+      it('should not log additional or missing error properties from custom error object', function () {
+        const errorObject = { color: 'color', value: 'value' };
+
+        logger.customError('error', 'hi', errorObject, { details: 'here' });
+
+        const logArguments = JSON.parse(Logger.config.output.args[0]);
+
+        expect(logArguments).to.not.have.any.keys('error_name', 'error_stack', 'error_message', 'error_data');
+        expect(logArguments).to.not.have.any.keys('color', 'value');
+      });
+    });
   });
 
   describe('#configure', function() {
