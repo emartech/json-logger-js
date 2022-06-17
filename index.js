@@ -1,6 +1,7 @@
 'use strict';
 
 const Logger = require('./src/logger/logger');
+const Timer = require('./src/timer/timer');
 const isNamespaceEnabled = require('./src/enabled/enabled');
 const formatter = require('./src/formatter');
 
@@ -16,6 +17,7 @@ function logFactory(namespace, options) {
 }
 
 logFactory.Logger = Logger;
+logFactory.Timer = Timer;
 logFactory.getNamespaces = function() {
   return process.env.DEBUG || '';
 };
