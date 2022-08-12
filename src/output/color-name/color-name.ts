@@ -1,16 +1,23 @@
-'use strict';
-
-const chalk = require('chalk');
+import chalk from 'chalk';
 const colors = ['cyan', 'magenta', 'grey', 'blue', 'green', 'yellow', 'white', 'red'];
 
-class ColorName {
-  static addColor(name) {
+interface Color {
+  color: number;
+}
+
+export class ColorName {
+  static counter = 0;
+  static colors = colors;
+  static names: Record<string, Color> = {};
+
+  static addColor(name: string) {
     if (!this.names[name]) {
       this.names[name] = { color: this.counter % colors.length };
       this.counter++;
     }
 
     const color = colors[this.names[name].color];
+    // @ts-ignore
     return chalk[color](name);
   }
 
@@ -19,9 +26,3 @@ class ColorName {
     this.names = {};
   }
 }
-
-ColorName.counter = 0;
-ColorName.names = {};
-ColorName.colors = colors;
-
-module.exports = ColorName;

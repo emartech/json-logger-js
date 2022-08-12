@@ -1,7 +1,7 @@
 'use strict';
 
 const express = require('express');
-const logFactory = require('../index');
+const logFactory = require('../dist');
 const clsAdapter = require('@emartech/cls-adapter');
 const logger = logFactory('example');
 const port = 3000;

@@ -1,7 +1,7 @@
 'use strict';
 
-const logFactory = require('../index');
-const Logger = require('./logger/logger');
+const logFactory = require('./index');
+const { Logger } = require('./logger/logger');
 
 describe('LogFactory', function() {
   beforeEach(function() {

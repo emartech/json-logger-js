@@ -1,6 +1,6 @@
 'use strict';
 
-const formatBody = require('./format-body');
+const { formatBody } = require('./format-body');
 
 describe('formatBody', function() {
   it('should order and stringify keys', function() {

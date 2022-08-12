@@ -1,6 +1,7 @@
 'use strict';
 
-module.exports = function(logBody) {
+// @ts-ignore
+export function formatBody(logBody) {
   const log = Object.assign({}, logBody);
 
   delete log.name;
@@ -22,4 +23,4 @@ module.exports = function(logBody) {
       return key + '=' + JSON.stringify(log[key]);
     })
     .join(' ');
-};
+}

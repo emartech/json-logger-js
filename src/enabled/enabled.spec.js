@@ -1,6 +1,6 @@
 'use strict';
 
-const isNamespaceEnabled = require('./enabled');
+const { isNamespaceEnabled } = require('./enabled');
 
 describe('isNamespaceAvailable', function() {
   it('should enable when variables only contain one', function() {

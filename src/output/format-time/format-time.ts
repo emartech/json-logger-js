@@ -1,9 +1,7 @@
-'use strict';
+export class FormatTime {
+  lastLog = 0;
 
-module.exports = {
-  lastLog: null,
-
-  elapsedTime: function() {
+  elapsedTime() {
     const current = this.getCurrentTime();
     let elapsed = 0;
 
@@ -13,9 +11,9 @@ module.exports = {
 
     this.lastLog = current;
     return '+' + elapsed + 'ms';
-  },
+  }
 
-  getCurrentTime: function() {
+  getCurrentTime() {
     return new Date().getTime();
   }
-};
+}

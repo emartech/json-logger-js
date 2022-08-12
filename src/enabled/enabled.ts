@@ -1,10 +1,8 @@
-'use strict';
-
-function isNamespaceEnabled(availableNamespaces, namespace) {
-  availableNamespaces = availableNamespaces.split(/[\s,]+/);
+export function isNamespaceEnabled(availableNamespace: string, namespace: string) {
+  const availableNamespaces = availableNamespace.split(/[\s,]+/);
   let enabled = false;
-  const adds = [];
-  const skips = [];
+  const adds: RegExp[] = [];
+  const skips: RegExp[] = [];
 
   availableNamespaces.forEach(function(name) {
     if (!name) {
@@ -33,5 +31,3 @@ function isNamespaceEnabled(availableNamespaces, namespace) {
 
   return enabled;
 }
-
-module.exports = isNamespaceEnabled;

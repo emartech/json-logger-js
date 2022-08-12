@@ -1,7 +1,8 @@
 'use strict';
 
 const Koa = require('koa');
-const logFactory = require('../index');
+const logFactory = require('../dist');
+
 const clsAdapter = require('@emartech/cls-adapter');
 const logger = logFactory('example');
 const port = 3000;
