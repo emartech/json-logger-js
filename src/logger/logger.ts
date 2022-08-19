@@ -113,12 +113,12 @@ export class Logger {
     this._log(severity, action, Object.assign(this._getErrorDetails(error), data));
   }
 
-  fromError(action: string, error: Error, data: unknown = {}) {
-    this.customError('error', action, error, data);
+  fromError(action: string, error: unknown, data: unknown = {}) {
+    this.customError('error', action, error as Error, data);
   }
 
-  warnFromError(action: string, error: Error, data: unknown = {}) {
-    this.customError('warn', action, error, data);
+  warnFromError(action: string, error: unknown, data: unknown = {}) {
+    this.customError('warn', action, error as Error, data);
   }
 
   timer() {

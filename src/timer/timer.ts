@@ -51,7 +51,7 @@ export class Timer {
     );
   }
 
-  fromError(action: string, error: Error, data: unknown = {}) {
+  fromError(action: string, error: unknown, data: unknown = {}) {
     this._logger.fromError(
       action,
       error,
@@ -59,7 +59,7 @@ export class Timer {
     );
   }
 
-  warnFromError(action: string, error: Error, data: unknown = {}) {
+  warnFromError(action: string, error: unknown, data: unknown = {}) {
     this._logger.warnFromError(
       action,
       error,
