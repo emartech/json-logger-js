@@ -1,7 +1,7 @@
 'use strict';
 
-const Logger = require('../logger/logger');
-const Timer = require('./timer');
+const { Logger } = require('../logger/logger');
+const { Timer } = require('./timer');
 
 describe('Timer', function() {
   it('should log elapsed time', function() {

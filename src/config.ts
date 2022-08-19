@@ -1,8 +1,11 @@
-'use strict';
+import chalk from 'chalk';
 
-const chalk = require('chalk');
+interface Color {
+  number: number;
+  name: string;
+}
 
-const levels = {
+const levels: Record<string, Color> = {
   trace: {
     number: 10,
     name: 'TRACE'
@@ -31,9 +34,9 @@ const levels = {
 
 const availableLevels = Object.keys(levels);
 
-const coloredNames = {};
+const coloredNames: Record<string, string> = {};
 availableLevels.forEach((levelName) => {
   coloredNames[levels[levelName].number] = levels[levelName].name;
 });
 
-module.exports = { levels, availableLevels, coloredNames };
+export const config = { levels, availableLevels, coloredNames };

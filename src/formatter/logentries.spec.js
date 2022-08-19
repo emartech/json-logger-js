@@ -1,6 +1,6 @@
 'use strict';
 
-const logentriesFormatter = require('./logentries');
+const { logentriesFormatter } = require('./logentries');
 
 describe('logentries formatter', function() {
   it('should stringify single field to key value pairs', function() {

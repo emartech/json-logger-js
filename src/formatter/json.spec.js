@@ -1,6 +1,6 @@
 'use strict';
 
-const jsonFormatter = require('./json');
+const { jsonFormatter } = require('./json');
 
 describe('json formatter', function() {
   it('should stringify object to json', function() {

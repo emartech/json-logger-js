@@ -1,8 +1,8 @@
 'use strict';
 
-const Logger = require('./logger');
-const jsonFormatter = require('../formatter/json');
-const consoleOutput = require('../output/console');
+const { Logger } = require('./logger');
+const { jsonFormatter } = require('../formatter/json');
+const { consoleOutput } = require('../output/console');
 
 describe('Logger', function() {
   let logger;

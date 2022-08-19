@@ -1,6 +1,6 @@
 'use strict';
 
-const ColorName = require('./color-name');
+const { ColorName } = require('./color-name');
 
 describe('colorName', function() {
   afterEach(function () {

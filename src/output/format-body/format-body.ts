@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = function(logBody) {
+export function formatBody(logBody: any) {
   const log = Object.assign({}, logBody);
 
   delete log.name;
@@ -22,4 +22,4 @@ module.exports = function(logBody) {
       return key + '=' + JSON.stringify(log[key]);
     })
     .join(' ');
-};
+}
