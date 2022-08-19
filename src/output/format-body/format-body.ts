@@ -1,7 +1,6 @@
 'use strict';
 
-// @ts-ignore
-export function formatBody(logBody) {
+export function formatBody(logBody: any) {
   const log = Object.assign({}, logBody);
 
   delete log.name;
