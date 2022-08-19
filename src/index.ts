@@ -1,5 +1,5 @@
 import { Logger, LoggerConfig } from './logger/logger';
-export { Logger } from './logger/logger';
+export { Logger, LoggerConfig } from './logger/logger';
 import { Timer } from './timer/timer';
 export { Timer } from './timer/timer';
 import { isNamespaceEnabled } from './enabled/enabled';
