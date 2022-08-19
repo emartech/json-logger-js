@@ -1,8 +1,7 @@
 # @emartech/json-logger
 
 A tiny and fast logging library that outputs logs in JSON format.
-It has the same namespace based enabling/disabling mechanism as [debug]
-and has the same log levels as [bunyan].
+It has the same namespace based enabling/disabling mechanism as [debug].
 
 ### Installation
 
