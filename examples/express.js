@@ -1,12 +1,12 @@
 'use strict';
 
 const express = require('express');
-const logFactory = require('../dist');
+const { createLogger } = require('../dist');
 const clsAdapter = require('@emartech/cls-adapter');
-const logger = logFactory('example');
+const logger = createLogger('example');
 const port = 3000;
 
-logFactory.configure({
+createLogger.configure({
   transformers: [
     clsAdapter.addContextStorageToInput()
   ]

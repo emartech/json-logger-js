@@ -11,10 +11,13 @@ npm install @emartech/json-logger
 
 ### Usage
 
+#### Script
+
 ```javascript
 process.env.DEBUG = 'redis';
-const mongoLogger = require('@emartech/json-logger')('mongo');
-const redisLogger = require('@emartech/json-logger')('redis');
+const { createLogger } = require('@emartech/json-logger');
+const mongoLogger = createLogger('mongo');
+const redisLogger = createLogger('redis');
 
 redisLogger.info('connected', { domain: 'yahoo' });
 // {"name":"redis","action":"connected","level":30,"time":"2016-08-15T08:50:23.566Z","domain":"yahoo"}
@@ -24,6 +27,47 @@ mongoLogger.info('connected', { domain: 'google' });
 
 redisLogger.fromError('query', new Error('Unauthorized'), { problem: 'missmatch' });
 // {"name":"redis","action":"query","level":50,"time":"2016-08-15T08:50:23.569Z","error_name":"Error","error_stack":"Error: Unauthorized\n    at Object.<anonymous> (/home/blacksonic/workspace/bunyan-debug/example.js:15:32)\n    at Module._compile (module.js:541:32)\n    at Object.Module._extensions..js (module.js:550:10)\n    at Module.load (module.js:458:32)\n    at tryModuleLoad (module.js:417:12)\n    at Function.Module._load (module.js:409:3)\n    at Module.runMain (module.js:575:10)\n    at run (bootstrap_node.js:352:7)\n    at startup (bootstrap_node.js:144:9)\n    at bootstrap_node.js:467:3","error_message":"Unauthorized","problem":"missmatch"}
+```
+
+#### Class
+
+```javascript
+const { createLogger } = require('@emartech/json-logger');
+const logger = createLogger('Exporter');
+
+class Exporter {
+  export() {
+    mongoLogger.info('export', { customer_id: 123 });
+  }
+}
+```
+
+```typescript
+import { createLogger } from '@emartech/json-logger';
+const logger = createLogger('Exporter');
+
+class Exporter {
+  export() {
+    mongoLogger.info('export', { customer_id: 123 });
+  }
+}
+```
+
+#### Tests
+
+```javascript
+import { Logger } from '@emartech/json-logger';
+
+describe('Exporter', () => {
+  it('should log', () => {
+    jest.spyOn(Logger.prototype, 'info').mockReturnValue();
+    const exporter = new Exporter();
+    
+    exporter.export();
+
+    expect(Logger.prototype.info).toHaveBeenCalledWith('export', { customer_id: 123 });
+  })
+});
 ```
 
 More examples can be found in the `examples` directory.
@@ -39,11 +83,12 @@ Disabled instances output no logs.
 
 ```javascript
 process.env.DEBUG = 'redis,mysql';
+const { createLogger } = require('@emartech/json-logger');
 
-const mongoLogger = require('@emartech/json-logger')('mongo');
+const mongoLogger = createLogger('mongo');
 // mongo instance will be disabled
 
-const redisLogger = require('@emartech/json-logger')('redis');
+const redisLogger = createLogger('redis');
 // redis instance will be enabled
 ```
 
@@ -52,7 +97,8 @@ const redisLogger = require('@emartech/json-logger')('redis');
 Prints the provided data to the console in JSON format.
 
 ```javascript
-const redisLogger = require('@emartech/json-logger')('redis');
+const { createLogger } = require('@emartech/json-logger');
+const redisLogger = createLogger('redis');
 
 redisLogger.info('connected', { domain: 'yahoo' });
 // {"name":"redis","action":"connected","level":30,"time":"2016-08-15T08:50:23.566Z","domain":"yahoo"}
@@ -92,7 +138,8 @@ The displayed line contains the stack trace, the name and the message of the err
 The log level defaults to error.
 
 ```javascript
-const redisLogger = require('@emartech/json-logger')('redis');
+const { createLogger } = require('@emartech/json-logger');
+const redisLogger = createLogger('redis');
 
 redisLogger.fromError('query', new Error('Unauthorized'), { problem: 'missmatch' });
 // {"name":"redis","action":"query","level":50,"time":"2016-08-15T08:50:23.569Z","error_name":"Error","error_stack":"Error: Unauthorized\n    at Object.<anonymous> (/home/blacksonic/workspace/bunyan-debug/example.js:15:32)\n    at Module._compile (module.js:541:32)\n    at Object.Module._extensions..js (module.js:550:10)\n    at Module.load (module.js:458:32)\n    at tryModuleLoad (module.js:417:12)\n    at Function.Module._load (module.js:409:3)\n    at Module.runMain (module.js:575:10)\n    at run (bootstrap_node.js:352:7)\n    at startup (bootstrap_node.js:144:9)\n    at bootstrap_node.js:467:3","error_message":"Unauthorized","problem":"missmatch"}
@@ -109,7 +156,8 @@ but also logs the elapsed time in milliseconds from the creation of the instance
 The elapsed time will be logged into the `duration` field.
 
 ```javascript
-const redisLogger = require('@emartech/json-logger')('redis');
+const { createLogger } = require('@emartech/json-logger');
+const redisLogger = createLogger('redis');
 
 const timer = redisLogger.timer();
 
@@ -127,9 +175,9 @@ With transformers we can alter the data to be logged before passing to the forma
 It is a perfect place to add the name of the machine is running on or the request id associated with the current thread stored on a continuation local storage. 
 
 ```javascript
-const Logger = require('@emartech/json-logger');
+const { createLogger } = require('@emartech/json-logger');
 
-Logger.configure({
+createLogger.configure({
   formatter: JSON.stringify,
   output: console.log,
   transformers: []
@@ -160,11 +208,11 @@ For automating
 
 ```javascript
 const Koa = require('koa');
-const logFactory = require('@emartech/json-logger');
+const { createLogger } = require('@emartech/json-logger');
 const clsAdapter = require('@emartech/cls-adapter');
-const logger = logFactory('redis');
+const logger = createLogger('redis');
 
-logFactory.configure({
+createLogger.configure({
   transformers: [
     clsAdapter.addContextStorageToInput()
   ]

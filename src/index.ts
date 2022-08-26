@@ -5,21 +5,16 @@ export { Timer } from './timer/timer';
 import { isNamespaceEnabled } from './enabled/enabled';
 import { formatter } from './formatter';
 
-export function logFactory(namespace: string): Logger {
+export function createLogger(namespace: string): Logger {
   return new Logger(namespace, isNamespaceEnabled(
-    logFactory.getNamespaces(), namespace
+    createLogger.getNamespaces(), namespace
   ));
 }
 
-logFactory.Logger = Logger;
-logFactory.Timer = Timer;
-logFactory.getNamespaces = function(): string {
+createLogger.getNamespaces = function(): string {
   return process.env.DEBUG || '';
 };
-logFactory.configure = function(options: LoggerConfig): void {
+createLogger.configure = function(options: LoggerConfig): void {
   Logger.configure(options);
 };
-logFactory.formatter = formatter;
-
-export default logFactory;
-module.exports = logFactory;
+createLogger.formatter = formatter;

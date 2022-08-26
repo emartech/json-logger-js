@@ -1,8 +1,8 @@
 process.env.DEBUG = 'redis';
-import logger from '../dist';
+import { createLogger } from '../dist';
 
-const mongoLogger = logger('mongo');
-const redisLogger = logger('redis');
+const mongoLogger = createLogger('mongo');
+const redisLogger = createLogger('redis');
 
 // simple info logging with enabled namespace
 redisLogger.info('connected', { domain: 'yahoo' });
