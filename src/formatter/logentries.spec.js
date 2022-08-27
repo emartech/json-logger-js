@@ -1,5 +1,3 @@
-'use strict';
-
 const { logentriesFormatter } = require('./logentries');
 
 describe('logentries formatter', function() {

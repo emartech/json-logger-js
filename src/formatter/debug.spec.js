@@ -1,10 +1,8 @@
-'use strict';
-
 const { debugFormatter } = require('./debug');
 const { ColorName } = require('../output/color-name/color-name');
 
 describe('debug formatter', function() {
-  afterEach(function () {
+  afterEach(function() {
     ColorName.reset();
   });
 

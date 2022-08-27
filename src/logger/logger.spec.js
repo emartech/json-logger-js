@@ -1,16 +1,13 @@
-'use strict';
-
 const { Logger } = require('./logger');
 const { jsonFormatter } = require('../formatter/json');
 const { consoleOutput } = require('../output/console');
 
 describe('Logger', function() {
   let logger;
-  let outputStub;
 
   beforeEach(function() {
     logger = new Logger('mongo', true);
-    outputStub = this.sandbox.stub(Logger.config, 'output');
+    this.sandbox.stub(Logger.config, 'output');
   });
 
   afterEach(function() {
@@ -214,7 +211,7 @@ describe('Logger', function() {
       expect(logArguments.error_data.length).to.eql(3004);
     });
 
-    describe('when not an Error instance is passed as error', function () {
+    describe('when not an Error instance is passed as error', function() {
       [
         { type: 'custom object', value: {} },
         { type: 'string', value: 'error' },
@@ -222,12 +219,12 @@ describe('Logger', function() {
         { type: 'number', value: 12 },
         { type: 'bool', value: true }
       ].forEach(({ type, value }) => {
-        it(`should not throw error when ${type} is passed as error`, function () {
+        it(`should not throw error when ${type} is passed as error`, function() {
           expect(() => logger.customError('error', 'hi', value, { details: 'here' })).to.not.throw();
         });
       });
 
-      it('should log error properties from custom error object', function () {
+      it('should log error properties from custom error object', function() {
         const errorObject = { name: 'Error', message: 'My custom error', stack: 'Stack', data: { value: 1 } };
 
         logger.customError('error', 'hi', errorObject, { details: 'here' });
@@ -240,7 +237,7 @@ describe('Logger', function() {
         expect(logArguments.error_data).to.eql(JSON.stringify(errorObject.data));
       });
 
-      it('should not log additional or missing error properties from custom error object', function () {
+      it('should not log additional or missing error properties from custom error object', function() {
         const errorObject = { color: 'color', value: 'value' };
 
         logger.customError('error', 'hi', errorObject, { details: 'here' });

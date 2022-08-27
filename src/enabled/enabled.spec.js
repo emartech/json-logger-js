@@ -1,5 +1,3 @@
-'use strict';
-
 const { isNamespaceEnabled } = require('./enabled');
 
 describe('isNamespaceAvailable', function() {

@@ -130,9 +130,9 @@ export class Logger {
       return;
     }
 
-    return stack.length > STACK_TRACE_LIMIT
-      ? stack.substring(0, STACK_TRACE_LIMIT) + ' ...'
-      : stack;
+    return stack.length > STACK_TRACE_LIMIT ?
+      stack.substring(0, STACK_TRACE_LIMIT) + ' ...' :
+      stack;
   }
 
   _shortenData(data: unknown) {
@@ -142,9 +142,9 @@ export class Logger {
 
     const stringifiedData: string = typeof data === 'object' ? JSON.stringify(data) : data as string;
 
-    return stringifiedData.length > DATA_LIMIT
-      ? stringifiedData.substring(0, DATA_LIMIT) + ' ...'
-      : stringifiedData;
+    return stringifiedData.length > DATA_LIMIT ?
+      stringifiedData.substring(0, DATA_LIMIT) + ' ...' :
+      stringifiedData;
   }
 
   _getErrorDetails(error: Error) {
@@ -163,7 +163,9 @@ export class Logger {
   }
 
   _getAxiosErrorDetails(error: AxiosError) {
-    if (!error.isAxiosError) return {};
+    if (!error.isAxiosError) {
+      return {};
+    }
 
     return {
       request_method: error.config.method,

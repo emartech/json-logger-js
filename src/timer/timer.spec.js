@@ -1,5 +1,3 @@
-'use strict';
-
 const { Logger } = require('../logger/logger');
 const { Timer } = require('./timer');
 
