@@ -1,5 +1,3 @@
-import chalk from 'chalk';
-
 interface Color {
   number: number;
   name: string;
@@ -20,23 +18,18 @@ const levels: Record<string, Color> = {
   },
   warn: {
     number: 40,
-    name: chalk.yellow('WARN')
+    name: 'WARN'
   },
   error: {
     number: 50,
-    name: chalk.red('ERROR')
+    name: 'ERROR'
   },
   fatal: {
     number: 60,
-    name: chalk.red('FATAL')
+    name: 'FATAL'
   }
 };
 
 const availableLevels = Object.keys(levels);
 
-const coloredNames: Record<string, string> = {};
-availableLevels.forEach((levelName) => {
-  coloredNames[levels[levelName].number] = levels[levelName].name;
-});
-
-export const config = { levels, availableLevels, coloredNames };
+export const config = { levels, availableLevels };
