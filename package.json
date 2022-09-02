@@ -1,6 +1,5 @@
 {
   "name": "@emartech/json-logger",
-  "version": "0.0.0",
   "description": "Tiny and fast json logger with namespace support",
   "main": "dist/index.js",
   "scripts": {
@@ -41,7 +40,7 @@
     "express": "4.18.1",
     "koa": "2.13.4",
     "mocha": "10.0.0",
-    "semantic-release": "15.5.0",
+    "semantic-release": "19.0.5",
     "sinon": "14.0.0",
     "sinon-chai": "3.7.0",
     "ts-node": "10.9.1",
