@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+
+env:
+  NPM_TOKEN: ${{ secrets.SEMANTIC_RELEASE_NPM_TOKEN }}
+  GH_TOKEN: ${{ secrets.SEMANTIC_RELEASE_GH_TOKEN }}
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Node version
+        id: engines
+        run: echo "##[set-output name=NODE_VERSION;]$(cat .nvmrc)"
+      - name: Use Node.js ${{ steps.engines.outputs.NODE_VERSION }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ steps.engines.outputs.NODE_VERSION }}
+      - name: Install
+        run: npm install
+      - name: Lint
+        run: npm run lint
+      - name: Test
+        run: npm run test
+      - name: Build
+        run: npm run build
+      - name: Release
+        run: npm run semantic-release
