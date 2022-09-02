@@ -55,7 +55,7 @@ export class Logger {
     formatter: jsonFormatter,
     output: consoleOutput,
     transformers: []
-  }
+  };
 
   isEnabled() {
     return this._enabled;
