@@ -29,7 +29,7 @@ const levels: Record<string, Color> = {
   fatal: {
     number: 60,
     name: chalk.red('FATAL')
-  },
+  }
 };
 
 const availableLevels = Object.keys(levels);
