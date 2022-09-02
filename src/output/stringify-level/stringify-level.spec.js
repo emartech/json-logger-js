@@ -1,5 +1,3 @@
-'use strict';
-
 const { stringifyLevel } = require('./stringify-level');
 
 describe('stringifyLevel', function() {

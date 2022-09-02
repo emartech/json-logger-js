@@ -1,5 +1,3 @@
-'use strict';
-
 export function formatBody(logBody: any) {
   const log = Object.assign({}, logBody);
 

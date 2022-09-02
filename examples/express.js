@@ -1,5 +1,3 @@
-'use strict';
-
 const express = require('express');
 const { createLogger } = require('../dist');
 const clsAdapter = require('@emartech/cls-adapter');

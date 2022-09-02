@@ -1,9 +1,7 @@
-'use strict';
-
 const { ColorName } = require('./color-name');
 
 describe('colorName', function() {
-  afterEach(function () {
+  afterEach(function() {
     ColorName.reset();
   });
 

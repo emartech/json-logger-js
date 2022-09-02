@@ -1,5 +1,3 @@
-'use strict';
-
 const { createLogger, Logger } = require('./index');
 
 describe('createLogger', function() {

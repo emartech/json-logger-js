@@ -1,5 +1,3 @@
-'use strict';
-
 const { formatBody } = require('./format-body');
 
 describe('formatBody', function() {

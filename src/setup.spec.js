@@ -1,5 +1,3 @@
-'use strict';
-
 const sinon = require('sinon');
 const chai = require('chai');
 const sinonChai = require('sinon-chai');
@@ -8,12 +6,12 @@ global.expect = require('chai').expect;
 chai.use(sinonChai);
 global.expect = chai.expect;
 
-beforeEach(function () {
+beforeEach(function() {
   this.sandbox = sinon.createSandbox();
   this.clock = sinon.useFakeTimers();
 });
 
-afterEach(function () {
+afterEach(function() {
   this.sandbox.restore();
   this.sandbox = undefined;
   this.clock.restore();

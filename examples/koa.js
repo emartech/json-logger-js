@@ -1,5 +1,3 @@
-'use strict';
-
 const Koa = require('koa');
 const { createLogger } = require('../dist');
 

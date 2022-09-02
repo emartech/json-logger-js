@@ -1,5 +1,3 @@
-'use strict';
-
 process.env.DEBUG = 'redis';
 const { createLogger } = require('../dist');
 
