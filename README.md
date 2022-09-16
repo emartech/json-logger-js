@@ -9,6 +9,7 @@ It has the same namespace based enabling/disabling mechanism as [debug].
 npm install @emartech/json-logger
 ```
 
+
 ### Usage
 
 #### Script
