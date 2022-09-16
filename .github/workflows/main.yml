@@ -1,8 +1,8 @@
-name: CI
+name: Test and Release
 
 on:
   push:
-    branches: [ master, main ]
+    branches: [master, main]
 
 env:
   NPM_TOKEN: ${{ secrets.SEMANTIC_RELEASE_NPM_TOKEN }}
@@ -10,17 +10,21 @@ env:
 
 jobs:
   test:
+    name: Job runner
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
-      - name: Node version
-        id: engines
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Get Node version
+        id: node-version
         run: echo "##[set-output name=NODE_VERSION;]$(cat .nvmrc)"
-      - name: Use Node.js ${{ steps.engines.outputs.NODE_VERSION }}
+      - name: Setup node
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ steps.engines.outputs.NODE_VERSION }}
+          node-version: ${{ steps.node-version.outputs.NODE_VERSION }}
       - name: Install
         run: npm install
       - name: Lint
