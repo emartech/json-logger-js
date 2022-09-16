@@ -9,29 +9,6 @@ env:
   GH_TOKEN: ${{ secrets.SEMANTIC_RELEASE_GH_TOKEN1 }}
 
 jobs:
-  test:
-    name: Job runner
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-      - name: Get Node version
-        id: node-version
-        run: echo "##[set-output name=NODE_VERSION;]$(cat .nvmrc)"
-      - name: Setup node
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ steps.node-version.outputs.NODE_VERSION }}
-      - name: Install
-        run: npm install
-      - name: Lint
-        run: npm run lint
-      - name: Test
-        run: npm run test
-      - name: Build
-        run: npm run build
-      - name: Release
-        run: npm run semantic-release
+  init:
+    name: Init
+    uses: ./.github/workflows/_init.yml
