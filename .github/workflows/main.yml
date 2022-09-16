@@ -16,6 +16,7 @@ jobs:
   test:
     name: Test
     uses: ./.github/workflows/_test.yml
+    needs: [ init ]
     with:
       NODE_VERSION: ${{ needs.init.outputs.NODE_VERSION }}
       NODE_CACHE_KEY: ${{ needs.init.outputs.NODE_CACHE_KEY }}
