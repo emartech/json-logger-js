@@ -1,0 +1,42 @@
+name: Test
+
+on:
+  pull_request:
+    branches:
+      - main
+      - master
+  push:
+    branches:
+      - '*'
+      - '*/*'
+      - '**'
+      - '!master'
+      - '!main'
+
+env:
+  NPM_TOKEN: ${{ secrets.SEMANTIC_RELEASE_NPM_TOKEN }}
+  GH_TOKEN: ${{ secrets.SEMANTIC_RELEASE_GH_TOKEN }}
+
+jobs:
+  test:
+    name: Job runner
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Get Node version
+        id: node-version
+        run: echo "##[set-output name=NODE_VERSION;]$(cat .nvmrc)"
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ steps.node-version.outputs.NODE_VERSION }}
+      - name: Install
+        run: npm install
+      - name: Lint
+        run: npm run lint
+      - name: Test
+        run: npm run test

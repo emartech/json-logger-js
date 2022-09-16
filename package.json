@@ -7,11 +7,9 @@
     "test:watch": "mocha --require ts-node/register ./src --recursive --watch",
     "lint": "eslint ./src/**/*.{ts,js}",
     "build": "rm -rf dist && tsc --project ./tsconfig.json",
-    "semantic-release": "CI=true semantic-release",
+    "release": "CI=true semantic-release",
     "example-js": "DEBUG=* node examples/index-js.js",
-    "example-ts": "DEBUG=* ts-node examples/index-ts.ts",
-    "koa-example": "DEBUG=* node examples/koa.js",
-    "express-example": "DEBUG=* node examples/express.js"
+    "example-ts": "DEBUG=* ts-node examples/index-ts.ts"
   },
   "publishConfig": {
     "access": "public"
