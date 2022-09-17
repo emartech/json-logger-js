@@ -1,3 +1,4 @@
+const { expect } = require('chai');
 const { logentriesFormatter } = require('./logentries');
 
 describe('logentries formatter', function() {

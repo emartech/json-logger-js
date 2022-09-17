@@ -1,3 +1,4 @@
+const { expect } = require('chai');
 const { jsonFormatter } = require('./json');
 
 describe('json formatter', function() {

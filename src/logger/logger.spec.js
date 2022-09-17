@@ -1,13 +1,17 @@
+const { expect } = require('chai');
+const sinon = require('sinon');
 const { Logger } = require('./logger');
 const { jsonFormatter } = require('../formatter/json');
 const { consoleOutput } = require('../output/console');
 
 describe('Logger', function() {
   let logger;
+  let clock;
 
   beforeEach(function() {
     logger = new Logger('mongo', true);
-    this.sandbox.stub(Logger.config, 'output');
+    sinon.stub(Logger.config, 'output');
+    clock = sinon.useFakeTimers();
   });
 
   afterEach(function() {
@@ -16,6 +20,7 @@ describe('Logger', function() {
       output: consoleOutput,
       transformers: []
     });
+    clock.restore();
   });
 
   it('should call log info method when enabled', function() {
@@ -48,9 +53,9 @@ describe('Logger', function() {
   it('should not call log info method when disabled', function() {
     logger = new Logger('mongo', false);
     const timer = logger.timer();
-    const infoStub = this.sandbox.stub(logger, 'info');
+    const infoStub = sinon.stub(logger, 'info');
 
-    this.clock.tick(100);
+    clock.tick(100);
     timer.info('hi');
 
     expect(infoStub).to.have.been.calledWith('hi', { duration: 100 });
@@ -253,7 +258,7 @@ describe('Logger', function() {
   describe('#configure', function() {
     it('should change format method', function() {
       const formattedOutput = '{"my":"method"}';
-      const formatterStub = this.sandbox.stub();
+      const formatterStub = sinon.stub();
       formatterStub.returns(formattedOutput);
 
       Logger.configure({
@@ -266,7 +271,7 @@ describe('Logger', function() {
     });
 
     it('should change output method', function() {
-      const outputStub = this.sandbox.stub();
+      const outputStub = sinon.stub();
       Logger.configure({
         output: outputStub
       });

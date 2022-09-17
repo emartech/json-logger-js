@@ -1,4 +1,5 @@
 const { isNamespaceEnabled } = require('./enabled');
+const { expect } = require('chai');
 
 describe('isNamespaceAvailable', function() {
   it('should enable when variables only contain one', function() {
