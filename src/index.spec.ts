@@ -1,4 +1,5 @@
-const { createLogger, Logger } = require('./index');
+import { expect } from 'chai';
+import { createLogger, Logger } from './index';
 
 describe('createLogger', function() {
   beforeEach(function() {

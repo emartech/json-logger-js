@@ -1,3 +1,3 @@
-export function consoleOutput(formattedLog: unknown) {
+export const consoleOutput = (formattedLog: unknown) => {
   console.log(formattedLog);
-}
+};

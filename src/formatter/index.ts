@@ -3,5 +3,5 @@ import { logentriesFormatter } from './logentries';
 
 export const formatter = {
   json: jsonFormatter,
-  logentries: logentriesFormatter
+  logentries: logentriesFormatter,
 };

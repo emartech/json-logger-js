@@ -15,12 +15,12 @@ interface AxiosError extends Error {
   config: {
     method: string;
     url: string;
-  },
+  };
   response?: {
     status: number;
     statusText: string;
     data: string;
-  }
+  };
 }
 
 export interface LoggerConfig {
@@ -38,13 +38,13 @@ export class Logger {
     this._enabled = enabled;
   }
 
-  static configure(options: LoggerConfig) {
+  static configure(options: Partial<LoggerConfig>) {
     this._validate(options);
     Object.assign(Logger.config, options);
   }
 
-  static _validate(options: LoggerConfig) {
-    Object.keys(options).forEach(key => {
+  static _validate(options: Partial<LoggerConfig>) {
+    Object.keys(options).forEach((key) => {
       if (!allowedKeys.includes(key)) {
         throw new Error('Only the following keys are allowed: formatter, output');
       }
@@ -54,7 +54,7 @@ export class Logger {
   static config: LoggerConfig = {
     formatter: jsonFormatter,
     output: consoleOutput,
-    transformers: []
+    transformers: [],
   };
 
   isEnabled() {
@@ -95,18 +95,16 @@ export class Logger {
         name: this._namespace,
         action: action,
         level: config.levels[level].number,
-        time: new Date().toISOString()
+        time: new Date().toISOString(),
       },
-      data
+      data,
     );
 
     Logger.config.transformers.forEach((transform) => {
       dataToLog = transform(dataToLog);
     });
 
-    Logger.config.output(
-      Logger.config.formatter(dataToLog)
-    );
+    Logger.config.output(Logger.config.formatter(dataToLog));
   }
 
   customError(severity: string, action: string, error: Error, data: unknown = {}) {
@@ -130,9 +128,7 @@ export class Logger {
       return;
     }
 
-    return stack.length > STACK_TRACE_LIMIT ?
-      stack.substring(0, STACK_TRACE_LIMIT) + ' ...' :
-      stack;
+    return stack.length > STACK_TRACE_LIMIT ? stack.substring(0, STACK_TRACE_LIMIT) + ' ...' : stack;
   }
 
   _shortenData(data: unknown) {
@@ -140,11 +136,9 @@ export class Logger {
       return;
     }
 
-    const stringifiedData: string = typeof data === 'object' ? JSON.stringify(data) : data as string;
+    const stringifiedData: string = typeof data === 'object' ? JSON.stringify(data) : (data as string);
 
-    return stringifiedData.length > DATA_LIMIT ?
-      stringifiedData.substring(0, DATA_LIMIT) + ' ...' :
-      stringifiedData;
+    return stringifiedData.length > DATA_LIMIT ? stringifiedData.substring(0, DATA_LIMIT) + ' ...' : stringifiedData;
   }
 
   _getErrorDetails(error: Error) {
@@ -156,7 +150,7 @@ export class Logger {
       error_name: error.name,
       error_stack: this._shortenStackTrace(error.stack || ''),
       error_message: error.message,
-      error_data: this._shortenData((error as ErrorWithData).data)
+      error_data: this._shortenData((error as ErrorWithData).data),
     };
 
     return Object.assign(baseDetails, this._getAxiosErrorDetails(error as AxiosError));
@@ -172,7 +166,7 @@ export class Logger {
       request_url: error.config.url,
       response_status: error.response ? error.response.status : undefined,
       response_status_text: error.response ? error.response.statusText : undefined,
-      response_data: error.response ? this._shortenData(error.response.data) : undefined
+      response_data: error.response ? this._shortenData(error.response.data) : undefined,
     };
   }
 }
