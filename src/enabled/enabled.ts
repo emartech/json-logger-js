@@ -1,10 +1,10 @@
-export function isNamespaceEnabled(availableNamespace: string, namespace: string) {
+export const isNamespaceEnabled = (availableNamespace: string, namespace: string) => {
   const availableNamespaces = availableNamespace.split(/[\s,]+/);
   let enabled = false;
   const adds: RegExp[] = [];
   const skips: RegExp[] = [];
 
-  availableNamespaces.forEach(function(name) {
+  availableNamespaces.forEach((name) => {
     if (!name) {
       return;
     }
@@ -17,17 +17,17 @@ export function isNamespaceEnabled(availableNamespace: string, namespace: string
     }
   });
 
-  adds.forEach(function(addRegexp) {
+  adds.forEach((addRegexp) => {
     if (addRegexp.test(namespace)) {
       enabled = true;
     }
   });
 
-  skips.forEach(function(addRegexp) {
+  skips.forEach((addRegexp) => {
     if (addRegexp.test(namespace)) {
       enabled = false;
     }
   });
 
   return enabled;
-}
+};

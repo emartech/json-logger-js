@@ -14,9 +14,8 @@ const convertToTag = (value: unknown, key: string) => {
   return key + '=' + value;
 };
 
-export function logentriesFormatter(data: Record<string, unknown>) {
-  return Object
-    .keys(data)
-    .map(key => convertToTag(data[key], key))
+export const logentriesFormatter = (data: Record<string, unknown>) => {
+  return Object.keys(data)
+    .map((key) => convertToTag(data[key], key))
     .join(' ');
-}
+};

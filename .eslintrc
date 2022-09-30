@@ -10,16 +10,18 @@
       "impliedStrict": true
     }
   },
-  "globals": {
-    "expect": true
-  },
+  "plugins": ["@typescript-eslint", "prettier"],
   "rules": {
-    "security/detect-object-injection": 0,
     "security/detect-non-literal-regexp": 0,
     "no-unused-expressions": 0,
-    "func-style": 0
+    "@typescript-eslint/no-explicit-any": 0,
+    "@typescript-eslint/ban-types": 0,
+    "comma-dangle": 0
   },
   "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended",
     "emarsys"
   ]
 }

@@ -1,3 +1,3 @@
-export function jsonFormatter(log: unknown) {
+export const jsonFormatter = (log: unknown) => {
   return JSON.stringify(log);
-}
+};

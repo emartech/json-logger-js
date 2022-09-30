@@ -10,61 +10,35 @@ export class Timer {
   }
 
   trace(action: string, data: unknown = {}) {
-    this._logger.trace(
-      action,
-      Object.assign({ duration: this._duration() }, data)
-    );
+    this._logger.trace(action, Object.assign({ duration: this._duration() }, data));
   }
 
   debug(action: string, data: unknown = {}) {
-    this._logger.debug(
-      action,
-      Object.assign({ duration: this._duration() }, data)
-    );
+    this._logger.debug(action, Object.assign({ duration: this._duration() }, data));
   }
 
   info(action: string, data: unknown = {}) {
-    this._logger.info(
-      action,
-      Object.assign({ duration: this._duration() }, data)
-    );
+    this._logger.info(action, Object.assign({ duration: this._duration() }, data));
   }
 
   warn(action: string, data: unknown = {}) {
-    this._logger.warn(
-      action,
-      Object.assign({ duration: this._duration() }, data)
-    );
+    this._logger.warn(action, Object.assign({ duration: this._duration() }, data));
   }
 
   error(action: string, data: unknown = {}) {
-    this._logger.error(
-      action,
-      Object.assign({ duration: this._duration() }, data)
-    );
+    this._logger.error(action, Object.assign({ duration: this._duration() }, data));
   }
 
   fatal(action: string, data: unknown = {}) {
-    this._logger.fatal(
-      action,
-      Object.assign({ duration: this._duration() }, data)
-    );
+    this._logger.fatal(action, Object.assign({ duration: this._duration() }, data));
   }
 
   fromError(action: string, error: unknown, data: unknown = {}) {
-    this._logger.fromError(
-      action,
-      error,
-      Object.assign({ duration: this._duration() }, data)
-    );
+    this._logger.fromError(action, error, Object.assign({ duration: this._duration() }, data));
   }
 
   warnFromError(action: string, error: unknown, data: unknown = {}) {
-    this._logger.warnFromError(
-      action,
-      error,
-      Object.assign({ duration: this._duration() }, data)
-    );
+    this._logger.warnFromError(action, error, Object.assign({ duration: this._duration() }, data));
   }
 
   _duration(): number {
