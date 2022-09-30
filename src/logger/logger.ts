@@ -30,20 +30,20 @@ export interface LoggerConfig {
 }
 
 export class Logger {
-  _namespace: string;
-  _enabled: boolean;
+  private readonly namespace: string;
+  private readonly enabled: boolean;
 
   constructor(namespace: string, enabled: boolean) {
-    this._namespace = namespace;
-    this._enabled = enabled;
+    this.namespace = namespace;
+    this.enabled = enabled;
   }
 
   static configure(options: Partial<LoggerConfig>) {
-    this._validate(options);
+    this.validate(options);
     Object.assign(Logger.config, options);
   }
 
-  static _validate(options: Partial<LoggerConfig>) {
+  private static validate(options: Partial<LoggerConfig>) {
     Object.keys(options).forEach((key) => {
       if (!allowedKeys.includes(key)) {
         throw new Error('Only the following keys are allowed: formatter, output');
@@ -58,57 +58,35 @@ export class Logger {
   };
 
   isEnabled() {
-    return this._enabled;
+    return this.enabled;
   }
 
   trace(action: string, data: unknown = {}) {
-    this._log('trace', action, data);
+    this.log('trace', action, data);
   }
 
   debug(action: string, data: unknown = {}) {
-    this._log('debug', action, data);
+    this.log('debug', action, data);
   }
 
   info(action: string, data: unknown = {}) {
-    this._log('info', action, data);
+    this.log('info', action, data);
   }
 
   warn(action: string, data: unknown = {}) {
-    this._log('warn', action, data);
+    this.log('warn', action, data);
   }
 
   error(action: string, data: unknown = {}) {
-    this._log('error', action, data);
+    this.log('error', action, data);
   }
 
   fatal(action: string, data: unknown = {}) {
-    this._log('fatal', action, data);
-  }
-
-  _log(level: string, action: string, data: unknown) {
-    if (!this._enabled) {
-      return;
-    }
-
-    let dataToLog = Object.assign(
-      {
-        name: this._namespace,
-        action: action,
-        level: config.levels[level].number,
-        time: new Date().toISOString(),
-      },
-      data,
-    );
-
-    Logger.config.transformers.forEach((transform) => {
-      dataToLog = transform(dataToLog);
-    });
-
-    Logger.config.output(Logger.config.formatter(dataToLog));
+    this.log('fatal', action, data);
   }
 
   customError(severity: string, action: string, error: Error, data: unknown = {}) {
-    this._log(severity, action, Object.assign(this._getErrorDetails(error), data));
+    this.log(severity, action, Object.assign(this.getErrorDetails(error), data));
   }
 
   fromError(action: string, error: unknown, data: unknown = {}) {
@@ -123,7 +101,29 @@ export class Logger {
     return new Timer(this);
   }
 
-  _shortenStackTrace(stack: string) {
+  private log(level: string, action: string, data: unknown) {
+    if (!this.enabled) {
+      return;
+    }
+
+    let dataToLog = Object.assign(
+      {
+        name: this.namespace,
+        action: action,
+        level: config.levels[level].number,
+        time: new Date().toISOString(),
+      },
+      data,
+    );
+
+    Logger.config.transformers.forEach((transform) => {
+      dataToLog = transform(dataToLog);
+    });
+
+    Logger.config.output(Logger.config.formatter(dataToLog));
+  }
+
+  private shortenStackTrace(stack: string) {
     if (!stack) {
       return;
     }
@@ -131,7 +131,7 @@ export class Logger {
     return stack.length > STACK_TRACE_LIMIT ? stack.substring(0, STACK_TRACE_LIMIT) + ' ...' : stack;
   }
 
-  _shortenData(data: unknown) {
+  private shortenData(data: unknown) {
     if (typeof data === 'undefined') {
       return;
     }
@@ -141,22 +141,22 @@ export class Logger {
     return stringifiedData.length > DATA_LIMIT ? stringifiedData.substring(0, DATA_LIMIT) + ' ...' : stringifiedData;
   }
 
-  _getErrorDetails(error: Error) {
+  private getErrorDetails(error: Error) {
     if (!(error instanceof Object)) {
       return {};
     }
 
     const baseDetails = {
       error_name: error.name,
-      error_stack: this._shortenStackTrace(error.stack || ''),
+      error_stack: this.shortenStackTrace(error.stack || ''),
       error_message: error.message,
-      error_data: this._shortenData((error as ErrorWithData).data),
+      error_data: this.shortenData((error as ErrorWithData).data),
     };
 
-    return Object.assign(baseDetails, this._getAxiosErrorDetails(error as AxiosError));
+    return Object.assign(baseDetails, this.getAxiosErrorDetails(error as AxiosError));
   }
 
-  _getAxiosErrorDetails(error: AxiosError) {
+  private getAxiosErrorDetails(error: AxiosError) {
     if (!error.isAxiosError) {
       return {};
     }
@@ -166,7 +166,7 @@ export class Logger {
       request_url: error.config.url,
       response_status: error.response ? error.response.status : undefined,
       response_status_text: error.response ? error.response.statusText : undefined,
-      response_data: error.response ? this._shortenData(error.response.data) : undefined,
+      response_data: error.response ? this.shortenData(error.response.data) : undefined,
     };
   }
 }
