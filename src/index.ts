@@ -13,7 +13,7 @@ export function createLogger(namespace: string): Logger {
 createLogger.getNamespaces = function(): string {
   return process.env.DEBUG || '';
 };
-createLogger.configure = function(options: LoggerConfig): void {
+createLogger.configure = function(options: Partial<LoggerConfig>): void {
   Logger.configure(options);
 };
 createLogger.formatter = formatter;
