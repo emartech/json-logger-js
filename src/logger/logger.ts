@@ -4,6 +4,7 @@ const DATA_LIMIT = 3000;
 import { Timer } from '../timer/timer';
 import { jsonFormatter } from '../formatter/json';
 import { consoleOutput } from '../output/console';
+import { merge } from 'lodash';
 const allowedKeys = ['output', 'formatter', 'transformers', 'outputFormat'];
 
 interface ErrorWithData extends Error {
@@ -88,7 +89,7 @@ export class Logger {
   }
 
   customError(severity: string, action: string, error: Error, data: unknown = {}) {
-    this.log(severity, action, Object.assign(this.getErrorDetails(error), data));
+    this.log(severity, action, merge(this.getErrorDetails(error), data));
   }
 
   fromError(action: string, error: unknown, data: unknown = {}) {
@@ -108,7 +109,7 @@ export class Logger {
       return;
     }
 
-    let dataToLog = Object.assign(this.getBaseLogFields(level, action), data);
+    let dataToLog = merge(this.getBaseLogFields(level, action), data);
 
     Logger.config.transformers.forEach((transform) => {
       dataToLog = transform(dataToLog);
@@ -162,7 +163,7 @@ export class Logger {
       return {};
     }
 
-    return Object.assign(this.getBaseErrorDetails(error), this.getAxiosErrorDetails(error as AxiosError));
+    return merge(this.getBaseErrorDetails(error), this.getAxiosErrorDetails(error as AxiosError));
   }
 
   private getBaseErrorDetails(error: Error) {

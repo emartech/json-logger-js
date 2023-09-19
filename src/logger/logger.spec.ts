@@ -48,6 +48,17 @@ describe('Logger', () => {
     expect(logArguments.details).to.eql('forever');
   });
 
+  it('should not overwrite fields in ecs base log', () => {
+    logger.info('wedidit', { event: { duration: 245 }, log: { ter: 'abc' } });
+
+    const logArguments = JSON.parse(outputStub.args[0][0]);
+    expect(logArguments.event.action).to.eql('wedidit');
+    expect(logArguments.event.duration).to.eql(245);
+    expect(logArguments.log.logger).to.eql('mongo');
+    expect(logArguments.log.level).to.eql(30);
+    expect(logArguments.log.ter).to.eql('abc');
+  });
+
   it('should be callable without the data object', () => {
     logger.info('wedidit');
 
@@ -114,6 +125,23 @@ describe('Logger', () => {
     expect(logArguments.error.stack_trace).to.eql(error.stack);
     expect(logArguments.error.message).to.eql(error.message);
     expect(logArguments.error.context).to.eql(JSON.stringify(error.data));
+  });
+
+  it('should not overwrite ecs error fields with custom data', () => {
+    const error: Error & { data?: any } = new Error('failed');
+    error.data = { test: 'data' };
+
+    logger.fromError('hi', error, { error: { bajvan: true } });
+
+    const logArguments = JSON.parse(outputStub.args[0][0]);
+
+    expect(logArguments.error).to.eql({
+      type: error.name,
+      stack_trace: error.stack,
+      message: error.message,
+      context: JSON.stringify(error.data),
+      bajvan: true,
+    });
   });
 
   it('should log error as warning with action', () => {
