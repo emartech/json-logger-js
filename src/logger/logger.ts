@@ -4,7 +4,7 @@ const DATA_LIMIT = 3000;
 import { Timer } from '../timer/timer';
 import { jsonFormatter } from '../formatter/json';
 import { consoleOutput } from '../output/console';
-const allowedKeys = ['output', 'formatter', 'transformers'];
+const allowedKeys = ['output', 'formatter', 'transformers', 'outputFormat'];
 
 interface ErrorWithData extends Error {
   data: unknown;
@@ -27,6 +27,7 @@ export interface LoggerConfig {
   formatter: Function;
   output: Function;
   transformers: Function[];
+  outputFormat: String;
 }
 
 export class Logger {
@@ -46,7 +47,7 @@ export class Logger {
   private static validate(options: Partial<LoggerConfig>) {
     Object.keys(options).forEach((key) => {
       if (!allowedKeys.includes(key)) {
-        throw new Error('Only the following keys are allowed: formatter, output');
+        throw new Error('Only the following keys are allowed: ' + allowedKeys);
       }
     });
   }
@@ -55,6 +56,7 @@ export class Logger {
     formatter: jsonFormatter,
     output: consoleOutput,
     transformers: [],
+    outputFormat: 'ecs',
   };
 
   isEnabled() {
@@ -106,21 +108,35 @@ export class Logger {
       return;
     }
 
-    let dataToLog = Object.assign(
-      {
-        name: this.namespace,
-        action: action,
-        level: config.levels[level].number,
-        time: new Date().toISOString(),
-      },
-      data,
-    );
+    let dataToLog = Object.assign(this.getBaseLogFields(level, action), data);
 
     Logger.config.transformers.forEach((transform) => {
       dataToLog = transform(dataToLog);
     });
 
     Logger.config.output(Logger.config.formatter(dataToLog));
+  }
+
+  private getBaseLogFields(level: string, action: string) {
+    if (Logger.config.outputFormat === 'legacy') {
+      return {
+        name: this.namespace,
+        action: action,
+        level: config.levels[level].number,
+        time: new Date().toISOString(),
+      };
+    }
+
+    return {
+      '@timestamp': new Date().toISOString(),
+      event: {
+        action: action,
+      },
+      log: {
+        logger: this.namespace,
+        level: config.levels[level].number,
+      },
+    };
   }
 
   private shortenStackTrace(stack: string) {
@@ -146,14 +162,27 @@ export class Logger {
       return {};
     }
 
-    const baseDetails = {
-      error_name: error.name,
-      error_stack: this.shortenStackTrace(error.stack || ''),
-      error_message: error.message,
-      error_data: this.shortenData((error as ErrorWithData).data),
-    };
+    return Object.assign(this.getBaseErrorDetails(error), this.getAxiosErrorDetails(error as AxiosError));
+  }
 
-    return Object.assign(baseDetails, this.getAxiosErrorDetails(error as AxiosError));
+  private getBaseErrorDetails(error: Error) {
+    if (Logger.config.outputFormat === 'legacy') {
+      return {
+        error_name: error.name,
+        error_stack: this.shortenStackTrace(error.stack || ''),
+        error_message: error.message,
+        error_data: this.shortenData((error as ErrorWithData).data),
+      };
+    }
+
+    return {
+      error: {
+        type: error.name,
+        message: error.message,
+        context: this.shortenData((error as ErrorWithData).data),
+        stack_trace: this.shortenStackTrace(error.stack || ''),
+      },
+    };
   }
 
   private getAxiosErrorDetails(error: AxiosError) {
@@ -161,12 +190,31 @@ export class Logger {
       return {};
     }
 
+    if (Logger.config.outputFormat === 'legacy') {
+      return {
+        request_method: error.config.method,
+        request_url: error.config.url,
+        response_status: error.response ? error.response.status : undefined,
+        response_status_text: error.response ? error.response.statusText : undefined,
+        response_data: error.response ? this.shortenData(error.response.data) : undefined,
+      };
+    }
+
     return {
-      request_method: error.config.method,
-      request_url: error.config.url,
-      response_status: error.response ? error.response.status : undefined,
-      response_status_text: error.response ? error.response.statusText : undefined,
-      response_data: error.response ? this.shortenData(error.response.data) : undefined,
+      url: {
+        full: error.config.url,
+      },
+      http: {
+        request: {
+          method: error.config.method,
+        },
+        response: {
+          status_code: error.response ? error.response.status : undefined,
+          body: {
+            content: error.response ? this.shortenData(error.response.data) : undefined,
+          },
+        },
+      },
     };
   }
 }
