@@ -28,6 +28,7 @@
   ],
   "devDependencies": {
     "@types/chai": "4.3.3",
+    "@types/lodash": "4.14.198",
     "@types/mocha": "10.0.0",
     "@types/node": "18.7.23",
     "@types/sinon": "10.0.13",
@@ -59,5 +60,8 @@
   "bugs": {
     "url": "https://github.com/emartech/json-logger-js/issues"
   },
-  "homepage": "https://github.com/emartech/json-logger-js#readme"
+  "homepage": "https://github.com/emartech/json-logger-js#readme",
+  "dependencies": {
+    "lodash": "4.17.21"
+  }
 }
