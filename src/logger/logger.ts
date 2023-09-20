@@ -129,9 +129,9 @@ export class Logger {
     }
 
     return {
-      '@timestamp': new Date().toISOString(),
       event: {
         action: action,
+        created: new Date().toISOString(),
       },
       log: {
         logger: this.namespace,

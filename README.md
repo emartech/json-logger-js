@@ -34,14 +34,14 @@ const mongoLogger = createLogger('mongo');
 const redisLogger = createLogger('redis');
 
 redisLogger.info('connected', { domain: 'yahoo' });
-// ECS format: {"event":{"action":"connected"},"log":{"logger":"redis","level":30},"@timestamp":"2016-08-15T08:50:23.566Z","domain":"yahoo"}
+// ECS format: {"event":{"action":"connected","created":"2016-08-15T08:50:23.566Z"},"log":{"logger":"redis","level":30},"domain":"yahoo"}
 // Legacy format: {"name":"redis","action":"connected","level":30,"time":"2016-08-15T08:50:23.566Z","domain":"yahoo"}
 
 mongoLogger.info('connected', { domain: 'google' });
 // no output, because 'mongo' is not within namespaces (process.env.DEBUG)
 
 redisLogger.fromError('query', new Error('Unauthorized'), { problem: 'missmatch' });
-// ECS format: {"event":{"action":"query"},"log":{"logger":"redis","level":50},"@timestamp":"2016-08-15T08:50:23.569Z","error":{"type":"Error","message":"Unauthorized","stack_trace":"..."},"problem":"mismatch"}
+// ECS format: {"event":{"action":"query","created":"2016-08-15T08:50:23.569Z"},"log":{"logger":"redis","level":50},"error":{"type":"Error","message":"Unauthorized","stack_trace":"..."},"problem":"mismatch"}
 // Legacy format: {"name":"redis","action":"query","level":50,"time":"2016-08-15T08:50:23.569Z","error_name":"Error","error_stack":"Error: Unauthorized\n    at Object.<anonymous> (/home/blacksonic/workspace/bunyan-debug/example.js:15:32)\n    at Module._compile (module.js:541:32)\n    at Object.Module._extensions..js (module.js:550:10)\n    at Module.load (module.js:458:32)\n    at tryModuleLoad (module.js:417:12)\n    at Function.Module._load (module.js:409:3)\n    at Module.runMain (module.js:575:10)\n    at run (bootstrap_node.js:352:7)\n    at startup (bootstrap_node.js:144:9)\n    at bootstrap_node.js:467:3","error_message":"Unauthorized","problem":"missmatch"}
 ```
 
@@ -117,11 +117,11 @@ const { createLogger } = require('@emartech/json-logger');
 const redisLogger = createLogger('redis');
 
 redisLogger.info('connected', { domain: 'yahoo' });
-// ECS format: {"event":{"action":"connected"},"log":{"logger":"redis","level":30},"@timestamp":"2016-08-15T08:50:23.566Z","domain":"yahoo"}
+// ECS format: {"event":{"action":"connected","created":"2016-08-15T08:50:23.566Z"},"log":{"logger":"redis","level":30},"domain":"yahoo"}
 // Legacy format: {"name":"redis","action":"connected","level":30,"time":"2016-08-15T08:50:23.566Z","domain":"yahoo"}
 
 redisLogger.info('connected');
-// ECS format: {"event":{"action":"connected"},"log":{"logger":"redis","level":30},"@timestamp":"2016-08-15T08:50:23.566Z"}
+// ECS format: {"event":{"action":"connected","created":"2016-08-15T08:50:23.566Z"},"log":{"logger":"redis","level":30}}
 // Legacy format: {"name":"redis","action":"connected","level":30,"time":"2016-08-15T08:50:23.566Z"}
 ```
 
@@ -160,7 +160,7 @@ const { createLogger } = require('@emartech/json-logger');
 const redisLogger = createLogger('redis');
 
 redisLogger.fromError('query', new Error('Unauthorized'), { problem: 'missmatch' });
-// ECS format: {"event":{"action":"query"},"log":{"logger":"redis","level":50},"@timestamp":"2016-08-15T08:50:23.569Z","error":{"type":"Error","message":"Unauthorized","stack_trace":"..."},"problem":"mismatch"}
+// ECS format: {"event":{"action":"query","created":"2016-08-15T08:50:23.569Z"},"log":{"logger":"redis","level":50},"error":{"type":"Error","message":"Unauthorized","stack_trace":"..."},"problem":"mismatch"}
 // Legacy format: {"name":"redis","action":"query","level":50,"time":"2016-08-15T08:50:23.569Z","error_name":"Error","error_stack":"Error: Unauthorized\n    at Object.<anonymous> (/home/blacksonic/workspace/bunyan-debug/example.js:15:32)\n    at Module._compile (module.js:541:32)\n    at Object.Module._extensions..js (module.js:550:10)\n    at Module.load (module.js:458:32)\n    at tryModuleLoad (module.js:417:12)\n    at Function.Module._load (module.js:409:3)\n    at Module.runMain (module.js:575:10)\n    at run (bootstrap_node.js:352:7)\n    at startup (bootstrap_node.js:144:9)\n    at bootstrap_node.js:467:3","error_message":"Unauthorized","problem":"missmatch"}
 ```
 
@@ -184,7 +184,7 @@ const timer = redisLogger.timer();
 
 timer.info('completed');
 // Legacy format: {"name":"redis","action":"completed","level":30,"time":"2016-08-15T08:50:23.566Z","duration": 1500}
-// ECS format: {"event":{"action":"completed","duration":"1500"},"log":{"logger":"redis","level":30},"@timestamp":"2016-08-15T08:50:23.566Z"}
+// ECS format: {"event":{"action":"completed","duration":"1500","created":"2016-08-15T08:50:23.566Z"},"log":{"logger":"redis","level":30}}
 ```
 
 ##### JsonLogger.configure(options)
