@@ -183,6 +183,9 @@ export class Logger {
         context: this.shortenData((error as ErrorWithData).data),
         stack_trace: this.shortenStackTrace(error.stack || ''),
       },
+      event: {
+        reason: error.message,
+      },
     };
   }
 
