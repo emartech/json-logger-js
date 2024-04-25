@@ -13,9 +13,10 @@ interface ErrorWithData extends Error {
 
 interface AxiosError extends Error {
   isAxiosError: boolean;
-  config: {
-    method: string;
-    url: string;
+  code?: string;
+  config?: {
+    method?: string;
+    url?: string;
   };
   response?: {
     status: number;
@@ -196,8 +197,8 @@ export class Logger {
 
     if (Logger.config.outputFormat === 'legacy') {
       return {
-        request_method: error.config.method,
-        request_url: error.config.url,
+        request_method: error.config?.method,
+        request_url: error.config?.url,
         response_status: error.response ? error.response.status : undefined,
         response_status_text: error.response ? error.response.statusText : undefined,
         response_data: error.response ? this.shortenData(error.response.data) : undefined,
@@ -206,11 +207,11 @@ export class Logger {
 
     return {
       url: {
-        full: error.config.url,
+        full: error.config?.url,
       },
       http: {
         request: {
-          method: error.config.method,
+          method: error.config?.method,
         },
         response: {
           status_code: error.response ? error.response.status : undefined,
@@ -218,6 +219,9 @@ export class Logger {
             content: error.response ? this.shortenData(error.response.data) : undefined,
           },
         },
+      },
+      error: {
+        code: error.code,
       },
     };
   }

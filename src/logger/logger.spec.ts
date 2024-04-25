@@ -229,6 +229,7 @@ describe('Logger', () => {
       url: 'http://amazinghost.com/beautiful-path',
       method: 'get',
     };
+    error.code = 'ECONNREINVENTED';
 
     logger.fromError('hi', error, { details: 'here' });
 
@@ -237,6 +238,7 @@ describe('Logger', () => {
     expect(logArguments.event.action).to.eql('hi');
     expect(logArguments.log.level).to.eql(50);
 
+    expect(logArguments.error.code).to.eql(error.code);
     expect(logArguments.error.type).to.eql(error.name);
     expect(logArguments.error.stack_trace).to.eql(error.stack);
     expect(logArguments.error.message).to.eql(error.message);
@@ -272,6 +274,15 @@ describe('Logger', () => {
 
       const logArguments = JSON.parse(outputStub.args[0][0]);
       expect(logArguments.error).to.not.have.any.keys('context');
+    });
+
+    it('should not log error code when it is undefined in the AxiosError object', () => {
+      const error = new AxiosError('failed');
+
+      logger.customError('warn', 'hi', error, { details: 'here' });
+
+      const logArguments = JSON.parse(outputStub.args[0][0]);
+      expect(logArguments.error).to.not.have.any.keys('code');
     });
 
     it('should log only 3000 character of data', () => {
