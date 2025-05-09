@@ -1,6 +1,34 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:recommended"
-  ]
+    "config:best-practices",
+    ":enableVulnerabilityAlerts",
+    ":pinOnlyDevDependencies",
+    ":semanticCommits",
+    ":separateMultipleMajorReleases",
+    "group:allNonMajor"
+  ],
+  "dependencyDashboardLabels": ["dependencies"],
+  "labels": ["dependencies"],
+  "lockFileMaintenance": {
+    "enabled": true,
+    "schedule": ["on the 1-7 day on Sunday"]
+  },
+  "packageRules": [
+    {
+      "groupName": "axios",
+      "matchPackageNames": ["axios"],
+      "matchUpdateTypes": ["minor"]
+    },
+    {
+      "groupName": "typescript",
+      "matchPackageNames": ["typescript"],
+      "matchUpdateTypes": ["minor"]
+    },
+    {
+      "matchPackageNames": ["axios", "typescript"],
+      "separateMultipleMinor": true
+    }
+  ],
+  "schedule": ["on the 1-7 day on Sunday"]
 }
