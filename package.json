@@ -9,8 +9,8 @@
   "scripts": {
     "test": "mocha --require ts-node/register --extension ts ./src --recursive",
     "test:watch": "mocha --require ts-node/register --extension ts ./src --recursive --watch",
-    "lint": "ls -l src/ && eslint **/*.ts",
-    "lint:fix": "eslint ./src/**/*.ts --fix",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "build": "rm -rf dist && tsc --project ./tsconfig.json",
     "release": "CI=true semantic-release",
     "example-js": "DEBUG=* node examples/index-js.js",
