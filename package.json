@@ -2,6 +2,10 @@
   "name": "@emartech/json-logger",
   "description": "Tiny and fast json logger with namespace support",
   "main": "dist/index.js",
+  "files": [
+    "dist",
+    "!**.spec.*"
+  ],
   "scripts": {
     "test": "mocha --require ts-node/register --extension ts ./src --recursive",
     "test:watch": "mocha --require ts-node/register --extension ts ./src --recursive --watch",

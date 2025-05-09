@@ -1,9 +1,0 @@
-*.spec.js
-*.spec.d.ts
-node_modules
-.idea
-examples
-src
-.eslintrc
-.prettierrc
-.github
