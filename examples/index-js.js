@@ -1,5 +1,5 @@
 process.env.DEBUG = 'redis';
-const { createLogger } = require('../dist');
+import { createLogger } from '../dist';
 
 const mongoLogger = createLogger('mongo');
 const redisLogger = createLogger('redis');

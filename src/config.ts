@@ -6,28 +6,28 @@ interface Color {
 const levels: Record<string, Color> = {
   trace: {
     number: 10,
-    name: 'TRACE'
+    name: 'TRACE',
   },
   debug: {
     number: 20,
-    name: 'DEBUG'
+    name: 'DEBUG',
   },
   info: {
     number: 30,
-    name: 'INFO'
+    name: 'INFO',
   },
   warn: {
     number: 40,
-    name: 'WARN'
+    name: 'WARN',
   },
   error: {
     number: 50,
-    name: 'ERROR'
+    name: 'ERROR',
   },
   fatal: {
     number: 60,
-    name: 'FATAL'
-  }
+    name: 'FATAL',
+  },
 };
 
 const availableLevels = Object.keys(levels);
