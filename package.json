@@ -9,7 +9,7 @@
   "scripts": {
     "test": "mocha --require ts-node/register --extension ts ./src --recursive",
     "test:watch": "mocha --require ts-node/register --extension ts ./src --recursive --watch",
-    "lint": "eslint ./src/**/*.ts",
+    "lint": "eslint --debug ./src/**/*.ts",
     "lint:fix": "eslint ./src/**/*.ts --fix",
     "build": "rm -rf dist && tsc --project ./tsconfig.json",
     "release": "CI=true semantic-release",
