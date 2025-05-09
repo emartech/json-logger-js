@@ -1,9 +1,9 @@
+import { AxiosError, AxiosRequestHeaders } from 'axios';
 import { expect } from 'chai';
 import sinon, { SinonFakeTimers, SinonStub } from 'sinon';
-import { Logger } from './logger';
 import { jsonFormatter } from '../formatter/json';
 import { consoleOutput } from '../output/console';
-import { AxiosError } from 'axios';
+import { Logger } from './logger';
 
 describe('Logger', () => {
   let logger: Logger;
@@ -190,11 +190,12 @@ describe('Logger', () => {
       statusText: 'Something horrible happened',
       data: { useful_detail: 'important info' },
       headers: {},
-      config: {},
+      config: { headers: {} as AxiosRequestHeaders },
     };
     error.config = {
       url: 'http://amazinghost.com/beautiful-path',
       method: 'get',
+      headers: {} as AxiosRequestHeaders,
     };
 
     logger.fromError('hi', error, { details: 'here' });
@@ -223,11 +224,12 @@ describe('Logger', () => {
       statusText: 'Something horrible happened',
       data: { useful_detail: 'important info' },
       headers: {},
-      config: {},
+      config: { headers: {} as AxiosRequestHeaders },
     };
     error.config = {
       url: 'http://amazinghost.com/beautiful-path',
       method: 'get',
+      headers: {} as AxiosRequestHeaders,
     };
     error.code = 'ECONNREINVENTED';
 
@@ -242,10 +244,10 @@ describe('Logger', () => {
     expect(logArguments.error.type).to.eql(error.name);
     expect(logArguments.error.stack_trace).to.eql(error.stack);
     expect(logArguments.error.message).to.eql(error.message);
-    expect(logArguments.http.request.method).to.eql(error.config.method);
-    expect(logArguments.url.full).to.eql(error.config.url);
-    expect(logArguments.http.response.status_code).to.eql(error.response.status);
-    expect(logArguments.http.response.body.content).to.eql(JSON.stringify(error.response.data));
+    expect(logArguments.http.request.method).to.eql(error.config?.method);
+    expect(logArguments.url.full).to.eql(error.config?.url);
+    expect(logArguments.http.response.status_code).to.eql(error.response?.status);
+    expect(logArguments.http.response.body.content).to.eql(JSON.stringify(error.response?.data));
   });
 
   describe('#customError', () => {
