@@ -56,7 +56,7 @@
     "eslint-config-emarsys": "5.1.0",
     "eslint-config-prettier": "8.10.0",
     "eslint-plugin-no-only-tests": "3.3.0",
-    "eslint-plugin-prettier": "4.2.1",
+    "eslint-plugin-prettier": "5.4.0",
     "eslint-plugin-security": "1.7.1",
     "mocha": "10.8.2",
     "prettier": "2.8.8",
