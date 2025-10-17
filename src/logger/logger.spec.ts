@@ -250,6 +250,38 @@ describe('Logger', () => {
     expect(logArguments.http.response.body.content).to.eql(JSON.stringify(error.response?.data));
   });
 
+  it('should log causes', () => {
+    const rootCause = new Error('Root cause error');
+    rootCause.name = 'RootCauseError';
+    rootCause.stack = 'RootCauseError: Root cause error\n    at rootFunction()';
+
+    const intermediateError = new Error('Intermediate error');
+    intermediateError.name = 'IntermediateError';
+    intermediateError.stack = 'IntermediateError: Intermediate error\n    at intermediateFunction()';
+    intermediateError.cause = rootCause;
+
+    const mainError = new Error('Main error occurred');
+    mainError.name = 'MainError';
+    mainError.stack = 'MainError: Main error occurred\n    at mainFunction()';
+    mainError.cause = intermediateError;
+
+    logger.fromError('test_action', mainError, { details: 'test details' });
+
+    const logArguments = JSON.parse(outputStub.args[0][0]);
+    expect(logArguments.error.type).to.eql('MainError');
+    expect(logArguments.error.message).to.eql('Main error occurred');
+    expect(logArguments.error.cause).to.eql({
+      type: 'IntermediateError',
+      message: 'Intermediate error',
+      stack_trace: intermediateError.stack,
+      cause: {
+        type: 'RootCauseError',
+        message: 'Root cause error',
+        stack_trace: rootCause.stack,
+      },
+    });
+  });
+
   describe('#customError', () => {
     it('should log error as the given severity with action', () => {
       const error: Error & { data?: any } = new Error('failed');
