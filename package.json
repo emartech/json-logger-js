@@ -58,7 +58,7 @@
     "eslint-plugin-no-only-tests": "3.3.0",
     "eslint-plugin-prettier": "5.5.4",
     "eslint-plugin-security": "3.0.1",
-    "mocha": "10.8.2",
+    "mocha": "11.7.4",
     "prettier": "3.6.2",
     "semantic-release": "22.0.12",
     "sinon": "21.0.0",
