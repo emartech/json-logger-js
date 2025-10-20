@@ -51,7 +51,7 @@
     "@typescript-eslint/eslint-plugin": "8.46.1",
     "@typescript-eslint/parser": "8.46.1",
     "axios": "1.12.2",
-    "chai": "5.3.3",
+    "chai": "6.2.0",
     "eslint": "8.57.1",
     "eslint-config-emarsys": "5.1.0",
     "eslint-config-prettier": "10.1.8",
