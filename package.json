@@ -42,7 +42,7 @@
     "lodash": "^4.17.21"
   },
   "devDependencies": {
-    "@types/chai": "4.3.20",
+    "@types/chai": "5.2.2",
     "@types/lodash": "4.17.20",
     "@types/mocha": "10.0.10",
     "@types/node": "20.19.22",
@@ -51,7 +51,7 @@
     "@typescript-eslint/eslint-plugin": "8.46.1",
     "@typescript-eslint/parser": "8.46.1",
     "axios": "1.12.2",
-    "chai": "4.5.0",
+    "chai": "5.3.3",
     "eslint": "8.57.1",
     "eslint-config-emarsys": "5.1.0",
     "eslint-config-prettier": "10.1.8",
