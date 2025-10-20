@@ -18,5 +18,11 @@
     "@typescript-eslint/ban-types": 0,
     "comma-dangle": 0,
   },
-  "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended", "emarsys", "plugin:prettier/recommended"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "emarsys",
+    "plugin:prettier/recommended",
+    "plugin:chai-friendly/recommended",
+  ],
 }
