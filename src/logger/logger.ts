@@ -181,15 +181,21 @@ export class Logger {
     }
 
     return {
-      error: {
-        type: error.name,
-        message: error.message,
-        context: this.shortenData((error as ErrorWithData).data),
-        stack_trace: this.shortenStackTrace(error.stack || ''),
-      },
+      error: this.extractError(error),
       event: {
         reason: error.message,
       },
+    };
+  }
+
+  private extractError(error: Error): unknown {
+    const shortenedData = this.shortenData((error as ErrorWithData).data);
+    return {
+      type: error.name,
+      message: error.message,
+      ...(shortenedData && { context: shortenedData }),
+      stack_trace: this.shortenStackTrace(error.stack || ''),
+      ...(error.cause instanceof Error && { cause: this.extractError(error.cause) }),
     };
   }
 
