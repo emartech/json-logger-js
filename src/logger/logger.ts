@@ -1,10 +1,11 @@
+import { merge } from 'lodash';
 import { config } from '../config';
-const STACK_TRACE_LIMIT = 3000;
-const DATA_LIMIT = 3000;
-import { Timer } from '../timer/timer';
 import { jsonFormatter } from '../formatter/json';
 import { consoleOutput } from '../output/console';
-import { merge } from 'lodash';
+import { Timer } from '../timer/timer';
+
+const STACK_TRACE_LIMIT = 3000;
+const DATA_LIMIT = 3000;
 const allowedKeys = ['output', 'formatter', 'transformers', 'outputFormat'];
 
 interface ErrorWithData extends Error {
@@ -25,12 +26,14 @@ interface AxiosError extends Error {
   };
 }
 
+/* eslint-disable @typescript-eslint/no-unsafe-function-type */
 export interface LoggerConfig {
   formatter: Function;
   output: Function;
   transformers: Function[];
-  outputFormat: String;
+  outputFormat: string;
 }
+/* eslint-enable @typescript-eslint/no-unsafe-function-type */
 
 export class Logger {
   private readonly namespace: string;
