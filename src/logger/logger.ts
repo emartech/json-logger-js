@@ -5,8 +5,9 @@ import { consoleOutput } from '../output/console';
 import { Timer } from '../timer/timer';
 
 const STACK_TRACE_LIMIT = 3000;
+const ENHANCED_STACK_TRACE_LIMIT = 15000;
 const DATA_LIMIT = 3000;
-const allowedKeys = ['output', 'formatter', 'transformers', 'outputFormat'];
+const allowedKeys = ['output', 'formatter', 'transformers', 'outputFormat', 'enhancedStackTrace'];
 
 interface ErrorWithData extends Error {
   data: unknown;
@@ -32,6 +33,7 @@ export interface LoggerConfig {
   output: Function;
   transformers: Function[];
   outputFormat: string;
+  enhancedStackTrace: boolean;
 }
 /* eslint-enable @typescript-eslint/no-unsafe-function-type */
 
@@ -62,6 +64,7 @@ export class Logger {
     output: consoleOutput,
     transformers: [],
     outputFormat: 'ecs',
+    enhancedStackTrace: false,
   };
 
   isEnabled() {
@@ -171,32 +174,94 @@ export class Logger {
   }
 
   private getBaseErrorDetails(error: Error) {
+    const shortenedData = this.shortenData((error as ErrorWithData).data);
+
     if (Logger.config.outputFormat === 'legacy') {
       return {
         error_name: error.name,
         error_stack: this.shortenStackTrace(error.stack || ''),
         error_message: error.message,
-        error_data: this.shortenData((error as ErrorWithData).data),
+        error_data: shortenedData,
       };
     }
 
+    const stackTrace = Logger.config.enhancedStackTrace
+      ? this.getEnhancedStackTrace(error)
+      : this.shortenStackTrace(error.stack || '');
+
     return {
-      error: this.extractError(error),
+      error: {
+        type: error.name,
+        message: error.message,
+        ...(shortenedData && { context: shortenedData }),
+        stack_trace: stackTrace,
+      },
       event: {
         reason: error.message,
       },
     };
   }
 
-  private extractError(error: Error): unknown {
-    const shortenedData = this.shortenData((error as ErrorWithData).data);
-    return {
-      type: error.name,
-      message: error.message,
-      ...(shortenedData && { context: shortenedData }),
-      stack_trace: this.shortenStackTrace(error.stack || ''),
-      ...(error.cause instanceof Error && { cause: this.extractError(error.cause) }),
+  private getEnhancedStackTrace(error: Error): string {
+    const getNumberOfCommonFrames = (ownTrace: string[], enclosingTrace: string[]): number => {
+      let m = ownTrace.length - 1;
+      let n = enclosingTrace.length - 1;
+
+      while (m > 0 && n > 0 && ownTrace[m] === enclosingTrace[n]) {
+        m--;
+        n--;
+      }
+      return ownTrace.length - 1 - m;
     };
+
+    const getEnclosedStackTrace = (error: Error, enclosingTrace: string[], caption: string): string[] => {
+      const output: string[] = [];
+
+      let errorName: string;
+      let errorStack: string[];
+      const errorStackLines = error.stack ? error.stack.split('\n') : [];
+      const firstLine = errorStackLines.at(0);
+
+      if (error.stack) {
+        if (firstLine?.includes(error.name)) {
+          errorName = firstLine!;
+          errorStack = errorStackLines.slice(1);
+        } else {
+          errorName = error.name;
+          errorStack = errorStackLines;
+        }
+      } else {
+        errorName = error.name;
+        errorStack = [];
+      }
+
+      const commonFrames = getNumberOfCommonFrames(errorStack, enclosingTrace);
+      const uniqueFrames = errorStack.length - commonFrames;
+
+      output.push(caption + errorName);
+      errorStack.slice(0, uniqueFrames).forEach((line) => output.push(line));
+      if (commonFrames > 0) {
+        output.push(`\t... ${commonFrames} more`);
+      }
+
+      if (error.cause instanceof Error) {
+        output.push(...getEnclosedStackTrace(error.cause, errorStackLines, 'Caused by: '));
+      }
+
+      return output;
+    };
+
+    const stackTrace = getEnclosedStackTrace(error, [], '');
+    const joinedStackTrace = stackTrace.join('\n');
+    let resultStackTraceStr: string;
+
+    if (joinedStackTrace.length > ENHANCED_STACK_TRACE_LIMIT) {
+      resultStackTraceStr = joinedStackTrace.substring(0, ENHANCED_STACK_TRACE_LIMIT) + ' ...';
+    } else {
+      resultStackTraceStr = joinedStackTrace;
+    }
+
+    return resultStackTraceStr;
   }
 
   private getAxiosErrorDetails(error: AxiosError) {

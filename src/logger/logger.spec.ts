@@ -250,7 +250,7 @@ describe('Logger', () => {
     expect(logArguments.http.response.body.content).to.eql(JSON.stringify(error.response?.data));
   });
 
-  it('should log causes', () => {
+  it('should include error causes in stack trace when enhanced stack trace is enabled', () => {
     const rootCause = new Error('Root cause error');
     rootCause.name = 'RootCauseError';
     rootCause.stack = 'RootCauseError: Root cause error\n    at rootFunction()';
@@ -265,21 +265,16 @@ describe('Logger', () => {
     mainError.stack = 'MainError: Main error occurred\n    at mainFunction()';
     mainError.cause = intermediateError;
 
+    Logger.configure({ enhancedStackTrace: true });
+
     logger.fromError('test_action', mainError, { details: 'test details' });
 
     const logArguments = JSON.parse(outputStub.args[0][0]);
     expect(logArguments.error.type).to.eql('MainError');
     expect(logArguments.error.message).to.eql('Main error occurred');
-    expect(logArguments.error.cause).to.eql({
-      type: 'IntermediateError',
-      message: 'Intermediate error',
-      stack_trace: intermediateError.stack,
-      cause: {
-        type: 'RootCauseError',
-        message: 'Root cause error',
-        stack_trace: rootCause.stack,
-      },
-    });
+    expect(logArguments.error.stack_trace).to.eql(
+      [mainError.stack, 'Caused by: ' + intermediateError.stack, 'Caused by: ' + rootCause.stack].join('\n'),
+    );
   });
 
   describe('#customError', () => {
@@ -342,15 +337,29 @@ describe('Logger', () => {
         });
       });
 
-      it('should log error properties from custom error object', () => {
+      it('should log error properties from custom error object with normal stack trace', () => {
         const errorObject = { name: 'Error', message: 'My custom error', stack: 'Stack', data: { value: 1 } };
-
+        Logger.configure({ enhancedStackTrace: false });
         logger.customError('error', 'hi', errorObject, { details: 'here' });
 
         const logArguments = JSON.parse(outputStub.args[0][0]);
 
         expect(logArguments.error.type).to.eql(errorObject.name);
         expect(logArguments.error.stack_trace).to.eql(errorObject.stack);
+        expect(logArguments.error.message).to.eql(errorObject.message);
+        expect(logArguments.error.context).to.eql(JSON.stringify(errorObject.data));
+      });
+
+      it('should log error properties from custom error object with enhanced stack trace', () => {
+        const errorObject = { name: 'Error', message: 'My custom error', stack: 'Stack', data: { value: 1 } };
+
+        Logger.configure({ enhancedStackTrace: true });
+        logger.customError('error', 'hi', errorObject, { details: 'here' });
+
+        const logArguments = JSON.parse(outputStub.args[0][0]);
+
+        expect(logArguments.error.type).to.eql(errorObject.name);
+        expect(logArguments.error.stack_trace).to.eql([errorObject.name, errorObject.stack].join('\n'));
         expect(logArguments.error.message).to.eql(errorObject.message);
         expect(logArguments.error.context).to.eql(JSON.stringify(errorObject.data));
       });
@@ -414,7 +423,7 @@ describe('Logger', () => {
         throw new Error('should throw');
       } catch (e) {
         expect((e as Error).message).to.eql(
-          'Only the following keys are allowed: output,formatter,transformers,outputFormat',
+          'Only the following keys are allowed: output,formatter,transformers,outputFormat,enhancedStackTrace',
         );
       }
     });
