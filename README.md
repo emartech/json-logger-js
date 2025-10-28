@@ -193,6 +193,8 @@ The separate steps of the logging process can be configured here.
 These modifications affect all the instances of the library.
 With transformers we can alter the data to be logged before passing to the formatter and then to the output.
 It is a perfect place to add the name of the machine is running on or the request id associated with the current thread stored on a continuation local storage. 
+With the 'enhancedStackTrace' option set to true, the error stack traces will include the causes of the errors as well (if any) including their stack traces 
+with a significantly improved truncation limit.
 
 ```javascript
 const { createLogger } = require('@emartech/json-logger');
@@ -201,7 +203,8 @@ createLogger.configure({
   formatter: JSON.stringify,
   output: console.log,
   transformers: [],
-  outputFormat: 'ecs'
+  outputFormat: 'ecs',
+  enhancedStackTrace: true
 });
 
 ```
