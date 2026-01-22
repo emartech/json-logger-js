@@ -39,7 +39,7 @@
     "node": ">=20"
   },
   "dependencies": {
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.23"
   },
   "devDependencies": {
     "@types/chai": "5.2.3",
