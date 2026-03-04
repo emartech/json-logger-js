@@ -11,7 +11,7 @@ export const isNamespaceEnabled = (availableNamespace: string, namespace: string
 
     name = name.replace(/\*/g, '.*?');
     if (name[0] === '-') {
-      skips.push(new RegExp('^' + name.substr(1) + '$'));
+      skips.push(new RegExp('^' + name.substring(1) + '$'));
     } else {
       adds.push(new RegExp('^' + name + '$'));
     }

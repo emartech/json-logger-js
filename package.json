@@ -9,8 +9,8 @@
   "scripts": {
     "test": "mocha --require ts-node/register --extension ts ./src --recursive",
     "test:watch": "mocha --require ts-node/register --extension ts ./src --recursive --watch",
-    "lint": "cross-env ESLINT_USE_FLAT_CONFIG=false eslint .",
-    "lint:fix": "cross-env ESLINT_USE_FLAT_CONFIG=false eslint . --fix",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "build": "rm -rf dist && tsc --project ./tsconfig.json",
     "release": "CI=true semantic-release",
     "example-js": "DEBUG=* node examples/index-js.js",
@@ -48,13 +48,9 @@
     "@types/node": "20.19.35",
     "@types/sinon": "21.0.0",
     "@types/sinon-chai": "4.0.0",
-    "@typescript-eslint/eslint-plugin": "8.56.1",
-    "@typescript-eslint/parser": "8.56.1",
     "axios": "1.13.6",
     "chai": "6.2.2",
-    "cross-env": "10.1.0",
     "eslint": "9.39.3",
-    "eslint-config-emarsys": "5.1.0",
     "eslint-config-prettier": "10.1.8",
     "eslint-plugin-chai-friendly": "1.1.0",
     "eslint-plugin-no-only-tests": "3.3.0",
@@ -66,6 +62,7 @@
     "sinon": "21.0.1",
     "sinon-chai": "4.0.1",
     "ts-node": "10.9.2",
-    "typescript": "5.9.3"
+    "typescript": "5.9.3",
+    "typescript-eslint": "8.56.1"
   }
 }
