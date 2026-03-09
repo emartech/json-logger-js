@@ -14,7 +14,8 @@
     "build": "rm -rf dist && tsc --project ./tsconfig.json",
     "release": "CI=true semantic-release",
     "example-js": "DEBUG=* node examples/index-js.js",
-    "example-ts": "DEBUG=* ts-node examples/index-ts.ts"
+    "example-ts": "DEBUG=* ts-node examples/index-ts.ts",
+    "verify": "npm run lint && npm test"
   },
   "publishConfig": {
     "access": "public"
@@ -42,6 +43,7 @@
     "lodash": "^4.17.23"
   },
   "devDependencies": {
+    "@eslint/js": "10.0.1",
     "@types/chai": "5.2.3",
     "@types/lodash": "4.17.24",
     "@types/mocha": "10.0.10",
@@ -50,7 +52,7 @@
     "@types/sinon-chai": "4.0.0",
     "axios": "1.13.6",
     "chai": "6.2.2",
-    "eslint": "9.39.3",
+    "eslint": "10.0.2",
     "eslint-config-prettier": "10.1.8",
     "eslint-plugin-chai-friendly": "1.1.0",
     "eslint-plugin-no-only-tests": "3.3.0",
