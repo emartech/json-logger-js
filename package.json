@@ -50,7 +50,7 @@
     "@types/node": "24.12.2",
     "@types/sinon": "21.0.1",
     "@types/sinon-chai": "4.0.0",
-    "axios": "1.14.0",
+    "axios": "1.15.0",
     "chai": "6.2.2",
     "eslint": "10.2.0",
     "eslint-config-prettier": "10.1.8",
