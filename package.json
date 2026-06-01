@@ -15,7 +15,7 @@
     "release": "CI=true semantic-release",
     "example-js": "DEBUG=* node examples/index-js.js",
     "example-ts": "DEBUG=* ts-node examples/index-ts.ts",
-    "verify": "npm run lint && npm test"
+    "verify": "npm run lint && npm test && npm run build"
   },
   "publishConfig": {
     "access": "public"

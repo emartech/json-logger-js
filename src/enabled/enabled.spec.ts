@@ -1,5 +1,6 @@
-import { isNamespaceEnabled } from './enabled';
 import { expect } from 'chai';
+import { describe, it } from 'mocha';
+import { isNamespaceEnabled } from './enabled';
 
 describe('isNamespaceAvailable', () => {
   it('should enable when variables only contain one', () => {
